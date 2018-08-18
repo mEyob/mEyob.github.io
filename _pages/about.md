@@ -1,8 +1,8 @@
 ---
 layout: about
 permalink: /
-title: <strong>Your</strong> Name
-description: <a href="">Affiliations</a>. Address. Contacts. Moto. Etc.
+title: <strong>Misikir</strong> Eyob
+description: <a href="">Affiliations</a>.Aalto University. 
 
 profile:
   align: right
