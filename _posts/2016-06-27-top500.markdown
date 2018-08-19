@@ -1,12 +1,11 @@
-+++
-date = "2016-06-27T12:00:00"
-draft = false
-tags = ["Data analysis", "Supercomputing"]
-title = " Sunway TaihuLight - China's newly crowned supercomputer"
-math = true
-highlight = true
-image = "default.png"
-+++
+---
+layout: post
+date: 2016-06-27 12:00:00
+tags: ["Data analysis", "Network traffic"]
+title: "Sunway TaihuLight - China's newly crowned supercomputer"
+description: Top 500 supercomputers of the world
+comments: true
+---
 
 The latest [Top500](http://www.top500.org/lists/2016/06/) list of the world's fastest supercomputers
 was released on Monday 20th June 2016. The Top500 list was first introduced in June 1993, and it has been
@@ -25,7 +24,7 @@ performance and the maximum performance achieved in [TeraFLOPS](https://en.wikip
 
 So, the world's fastest computer can perform at about 93 PetaFLOPS! For some reason, clock cycle per second (=Hz)
 is favored when it comes to measuring performance of computers. So let's make a (highly approximative) conversion between FLOPS and Hz. Assume that the 
-Sunway TaihuLight processes one operation per clock cycle, this would correspond to 93PHz. To put it into perspective, let's see what it means in comparison to an off-the-shelf consumer laptop computer having a 2.4GHz double core processor. Furthermore, let's generously assume that the laptop completes one operation per cycle, and that it can perfectly parallelize (so that its maximum total speed would be 4.8GHz :)). Even with such relaxed assumptions, the Sunway TaihuLight would be *93015000/4.8 ≈ 20 ×* $10^6$ times faster. In other words, a complex operation that takes 10 minutes 
+Sunway TaihuLight processes one operation per clock cycle, this would correspond to 93PHz. To put it into perspective, let's see what it means in comparison to an off-the-shelf consumer laptop computer having a 2.4GHz double core processor. Furthermore, let's generously assume that the laptop completes one operation per cycle, and that it can perfectly parallelize (so that its maximum total speed would be 4.8GHz :)). Even with such relaxed assumptions, the Sunway TaihuLight would be *93015000/4.8 ≈ 20 ×* $$10^6$$ times faster. In other words, a complex operation that takes 10 minutes 
 on the poor laptop would be completed within 30 microseconds by the Sunway TaihuLight.
 
 Enough with the performance. Let's look at the "Power" and "Mflops/Watt" columns of the above dataframe a bit more closely. The former gives the power consumption values in kWatts, while the latter highlights energy efficiency of
@@ -33,15 +32,17 @@ the supercomputers. For example, the Sunway TaihuLight can perform about 6051 mi
 
 It goes without saying that such supercomputers are expensive to build, which justifies the hefty price for getting one. But the purchase price of supercomputers is only one portion of the Total Cost of Ownership (TCO). Energy consumption is another factor to be considered. Again taking the world's fastest supercomputer as an example, it consumes a whopping 15371 kWatt. This amounts to the electricity consumption of about 12,000 [American homes](https://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3). To get a rough
 estimate of the electricity bill, let's assume a modest *0.05* cents/kWh and that the machine will be running at peak power
-for *10* hours/day. This will result in 15371 kWatt ×10 h/day ×30 day/month ×$0.05 /kWh ≈$\$230, 000/month!
+for *10* hours/day. This will result in 
+
+$$15371 kWatt \times 10 h/day \times 30 day/month \times \$0.05 /kWh \approx \$230000/month$$!
 
 By now it should be obvious that one needs to keep a tab on the energy consumption of supercomputers for a complete comparison. In fact there are organizations solely focusing on energy efficiency, like [The Green500](www.green500.org) and [The Green Grid](http://www.thegreengrid.org/) So, now, let's rank the supercomputers based on their energy efficiency, that is, sort them based on the "Mflops/Watt" column and introduce the "GreenRank" column.
 
-<img src="greenRank.png" alt="greenRank" style="width: 600px;"/>
+<img src="{{ site.baseurl }}/assets/img/greenRank.png" alt="perf" style="width: 600px;">
 
 So, the Shoubu supercomputer from Japan wins the "Mflops/Watt" battle. But the Sunway TaihuLight is not far off, coming third next to the Satsuki. The next couple of plots show how the maximum performance achieved (Rmax) relates to the power consumption.
 
-<img src="performance-power-corr.png" alt="perf-power" style="width: 600px;"/>
+<img src="{{ site.baseurl }}/assets/img/performance-power-corr.png" alt="perf" style="width: 600px;">
 
 It comes as no surprise that there is a strong relationship between power consumption and performance.
 Thus, one needs to plan carefully in order to meet computation requirements while still having a reasonable
@@ -50,7 +51,7 @@ On the other hand, underprovisioning for the sake of energy savings may end up i
 
 For this, lets consider a ranking scheme where the rank of a supercomputer would be the sum of its performance rank (the 'Rank' column) and its energy efficiency rank (the 'GreenRank column'). Although this is an over symplified and synthetic ranking scheme, it would at least depict where a supercomputer lies in the spectrum when both performance and energy efficiency are given equal weight. The resulting rank is depicted in the following bar plot (Shorter bars correspond to better rank).
 
-<img src="comboRank.png" alt="comboRanking"/>
+<img src="{{ site.baseurl }}/assets/img/comboRank.png" alt="perf" style="width: 600px;">
 
 Concluding the Performance-Energy thing, let's look at the "Processor Generation" used in these supercomputers. As shown below the Intel Xeon E5 and E7 processors take the lion's share, although the world's fastest supercomputer
 runs on the 'sunway' processors.

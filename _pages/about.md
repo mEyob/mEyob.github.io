@@ -2,21 +2,21 @@
 layout: about
 permalink: /
 title: <strong>Misikir</strong> Eyob
-description: <a href="">Affiliations</a>.Aalto University. 
+description: <a href="http://comnet.aalto.fi/en/">Aalto University</a> 
 
 profile:
   align: right
   image: prof_pic.jpg
   address: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>Maarintie 8</p>
+    <p>02125, Espoo, Finland</p>
 
 news: false
 social: true
 ---
 
-Welcome to my website. I am a doctoral student in performance analysis and optimization of distributed computing 
-systems such as web server farms and scientific compute clusters. I mainly apply queueing theory, stochastic modeling,
-data analysis, multi-objective optimization and event-driven simulations in my research. While you are here, please have a 
-look at my publications and blog posts. 
+Welcome. I do research in performance analysis and cost optimization of distributed computing 
+systems and cloud infrastructures. I utilize practical analysis methods such as 
+statistical analysis of server logs, and theoretical analysis methods like queueing theory, stochastic modeling,
+and event-driven simulations in my research. While you are here, please have a 
+look at my publications and blog posts. Thanks!
