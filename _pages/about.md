@@ -15,8 +15,9 @@ news: false
 social: true
 ---
 
-Welcome. I do research in performance analysis and cost optimization of distributed computing 
-systems and cloud infrastructures. I utilize practical analysis methods such as 
-statistical analysis of server logs, and theoretical analysis methods like queueing theory, stochastic modeling,
-and event-driven simulations in my research. While you are here, please have a 
-look at my publications and blog posts. Thanks!
+Thanks for visiting my site. I do research in performance analysis and cost optimization of 
+distributed computing systems and cloud architectures. I utilize 
+a range of theoretical and practical analysis methods such as 
+statistical analysis of server logs, queueing theory, stochastic modeling,
+and event-driven simulations in my research. While you are here, please vist 
+my [blog posts](/blog), [publications](/publications) and [projects](projects).
