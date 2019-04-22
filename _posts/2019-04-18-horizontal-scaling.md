@@ -1,9 +1,9 @@
 ---
 layout: post
-date: 2019-01-19 12:00:00
-tags: ["Data analysis", "Network traffic"]
+date: 2019-04-19 12:00:00
+tags: ["Analysis", "Automation"]
 title: "Horizontal scaling and cost-performance optimization"
-description: Network capture and analysis
+description: Horizontal scaling
 ---
 
 ## Horizontal scaling and cost-performance optimization
@@ -54,15 +54,17 @@ availability and fault tolerance, in which case it is usually known as a **load 
 A dispatcher may also be designed to unbalance load, e.g. to reduce the cost of running servers 
 by packing jobs to as few servers as possible. The dispatcher employes popular algorithms such as
 **Round Robin**, **Join the Shortest Queue (JSQ)** or **Random** to assign jobs to servers.
-- **Resource Group Manager**: This manages the cluster of resources/servers. Have a total of *N* servers
+- **Resource Group Manager**: This manages the cluster of resources/servers. Having a total of *N* servers
 at its disposal, of which *n<=N* are currently active, it applies some scaling policy to determine the number
-of servers to stop/remove or launch based on current or estimated load.
+of servers to launch or stop/remove based on current or estimated load.
 
 The following figure shows a black-box representation of each of the components discussed above and their interaction.
 
 <center><img src="{{ site.baseurl }}/assets/img/resource-group-arch.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 ## Analysis
+Quantitative analysis of horizontally scaling systems can be performed using 
+one of the following approaches.
 
 - **Measurement and statistical analysis**: This is usually the prefered way of analysis, in which 
 relevant data such as request/job arrival times, response times, and the associated cost is collected
@@ -92,20 +94,36 @@ focuses on mean values of performance and cost metrics instead of percentiles (e
 
 ## Example: Abstract modeling and analysis of a horizontally-scaled AWS-hosted application
 
-A hypothetical application hosted in a horizontally scaled AWS environment
+As an example of a horizontally scaling system, consider a hypothetical application hosted 
+in a highly available and fault tolerant AWS environment consisting of an Elastic Load Balancer (ELB)
+and a group of EC2 servers managed in an autoscaling group. Each EC2 instance configured to run 
+*m* copies of a specific application. Minimum and maximum number of servers is set for an 
+autoscaling group to limit the extent to which of scaling actions can to taken to increase/decrease 
+the number of servers. A simple stochastic simulator 
+can be developed to model such a system and study the cost-performance trade-off ([code here](https://github.com/mEyob/horizontal-scaling-simulation)).
+From now on, we'll refer to this simulator as *AutoScale*
 
 AutoScale estimates the load on the system by observing the system for some time and takes scale up/down 
-actions. One way to do that is by setting a target load and threshold - launches servers when actual load is greater than target load + threshold
-                                      - stops servers when actual load is less than target load - threshold
-                                      - threshold helps in avoiding oscillatory effect in which the autoscaler attempts to 
-                                      keep the actual load at the target load by launching/stoping servers indefinately
-                                      - when a server is marked for stopping, this is communicated with the ELB so that 
-                                      it stops sending new requests to that server
-...more on AWS autoscaling ref:Autoscale user guide
+actions. One way to do that is by setting a *target load* and a *threshold*. Servers are launched when 
+the actual load is greater than the *target load + threshold*, whereas shutdown action is taken 
+when the actual load is less than *target load - threshold*.
+The threshold helps in avoiding oscillatory effect by the autoscaler in an attempt to 
+keep the actual load exactly at the target load by launching/stoping servers indefinately. When a server is marked 
+for stopping, this is communicated with the load balancer so that it stops sending new requests to that server
+For more on AWS autoscaling please refer the [Autoscale user guide](https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html).
 
-Elastic Load Balancer (ELB) - can use RR, JSQ, RND ...more on ELB ref:ELB user guide
-N EC2s - .4$/hr e.g. the xlarge t3 instances
-       - m copies of application hosted in a single EC2
+Elastic Load Balancer (ELB) primarly uses *Round Robin (RR)* for request forwarding but it 
+can also use *least outstanding requests* routing (also known as *JSQ*)in the classic ELB case. For more on ELB please refer 
+the [ELB user guide](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
+
+Min=5, Max=20,
+8 application copies running per EC2
+avg request rate = 40 req/min
+avg service time of requests 2 min
+Inter-arrival times and service times assumed to be exponentially distributed random variables, but 
+data from real system logs can also be used.
+
+ EC2 price 0.4$/hr (roughly the On-demand price of an xlarge t3 instances)
 
 
 <center><img src="{{ site.baseurl }}/assets/img/roundrobin.png" align="middle" style="width: 500px; height: 300px" /></center>
