@@ -96,10 +96,10 @@ As an example of a horizontally scaling system, consider a hypothetical applicat
 in a highly available and fault tolerant AWS environment consisting of an Elastic Load Balancer (ELB)
 and a group of EC2 servers managed in an autoscaling group. Each EC2 instance configured to run 
 *m* copies of a specific application. Minimum and maximum number of servers is set for an 
-autoscaling group to limit the extent to which of scaling actions can to taken to increase/decrease 
-the number of servers. A simple stochastic simulator 
-can be developed to model such a system and study the cost-performance trade-off ([code here](https://github.com/mEyob/horizontal-scaling-simulation)).
-From now on, we'll refer to this simulator as *AutoScale*
+autoscaling group to limit the extent to which scaling actions can increase/decrease 
+the number of servers. The cost-performance trade-off of this system can be studied 
+by building a simple stochastic simulator. See [this](https://github.com/mEyob/horizontal-scaling-simulation)
+Github page for a small python package.
 
 AutoScale estimates the load on the system by observing the system for some time and takes scale up/down 
 actions. One way to do that is by setting a *target load* and a *threshold*. Servers are launched when 

@@ -168,8 +168,7 @@ for i in range(1,11):
 df[3:6]
 ```
 
-<img src="table.jpg" alt="table" style="width: 800px;"/>
-
+<center><img src="{{ site.baseurl }}/assets/img/table.jpg" align="middle" style="width: 500px; height: 300px" /></center>
 
 The DataFrame has 8 Columns: 
 
@@ -209,7 +208,7 @@ ax.set_xlabel("Hours (since the start of capture)")
 ax.set_ylabel("Traffic volume (MegaBytes)")
 ```
 
-<img src="perHr.png" alt="perHr" style="width: 600px;" />
+<center><img src="{{ site.baseurl }}/assets/img/perHr.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 The peak occured at the 8th hour. Recalling that the capture is started at 13:00, the 
 peak would be at 21-22, when, of course, I started streaming a movie :)
@@ -235,7 +234,7 @@ ax.set_xlabel("Minutes (since the start of capture)")
 ax.set_ylabel("Traffic volume (MegaBytes)")
 ```
 
-<img src="perMin.png" alt="perMin" style="width: 600px;" />
+<center><img src="{{ site.baseurl }}/assets/img/perMin.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 ### Aggregate traffic
 This section wouldn't be complete without a single number 
@@ -267,8 +266,7 @@ df.boxplot(column="Packet Length (Bytes)", return_type='axes')
 
 ```
 
-<img src="box.png" alt="boxplot" style="width: 500px;" />
-
+<center><img src="{{ site.baseurl }}/assets/img/box.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 The Box plot shows that the packets range from $10$s to $1500$ bytes.
 This is to be expected as the maximum allowable size ([MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit))
@@ -293,7 +291,7 @@ ax1.set_title("PDF")
 ax2.set_title("CDF")
 ```
 
-![Distplot](dist.png)
+<center><img src="{{ site.baseurl }}/assets/img/dist.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 ---
 ## Finding the culprit
@@ -318,7 +316,7 @@ ax.set_ylabel("Traffic volume (MB)")
 ax.set_title("Top 20 IP addresses by traffic volume")
 ```
 
-![top20](../trace-analysis/topTwenty.png?raw=true)
+<center><img src="{{ site.baseurl }}/assets/img/topTwenty.png" align="middle" style="width: 500px; height: 300px" /></center>
 
 If one needs to know which application/website corresponds to which IP (or which port numbers),
 it can be done by listing the applications that are currently using network/internet connection using: 
