@@ -6,8 +6,6 @@ title: "Horizontal scaling and cost-performance optimization"
 description: Horizontal scaling
 ---
 
-## Horizontal scaling and cost-performance optimization
-
 In horizontal scaling systems, resources are added (launched) when the demand on the system increases
 and removed (stopped) when demand drops and they are not needed anymore. 
 The arrival intensity and the size of jobs processed 
@@ -39,16 +37,16 @@ time it takes to (interview, ...etc) aquire new operators.
 
 Similarly in a cloud computing environment, virtual machines, containers or lambda functions can be 
 launched/stopped to improve/reduce performance/cost. If the group of resources are virtual 
-machines, the launch delay is the time it takes to bootstrap a VM or a golden image. In any
+machines, the launch delay is the time it takes to bootstrap a VM or start a golden image. In any
 case, a horizontally scaling system has the following basic components:
 
-- **Traffic**: The stream of jobs that the system is designed to serve. The traffic contributes two 
-sources of randomness that should be considered in the design phase. Inter-arrival times of jobs 
+- **Traffic source**: The stream of jobs that the system is designed to serve. The traffic contributes two 
+sources of randomness that should be considered in the design phase: Inter-arrival times of jobs 
 and their sizes.
 - **Resource/Server**: A server has *m* service places, in which it can serve *m* jobs simultaneously.
 If the number of jobs *j* is greater than *m*, the server applies some scheduling policy (e.g. FIFO, PS)
 to determine which jobs get processed and which jobs wait in (a) queue(s).
-- **Dispatcher**: The interface jobs will encounter when they first arrive in the system. Its main duty is 
+- **Dispatcher**: This is the interface jobs will encounter when they first arrive in the system. Its main duty is 
 assigning incoming jobs to available servers. A dispatcher can be designed to inhance service 
 availability and fault tolerance, in which case it is usually known as a **load balancer**.
 A dispatcher may also be designed to unbalance load, e.g. to reduce the cost of running servers 
@@ -71,7 +69,7 @@ relevant data such as request/job arrival times, response times, and the associa
 from an actual system. Statistical analysis of the collected data usually produces valuable insights 
 into the currently implemented system. These insights, however, are limited to the specific system 
 and data set. It is difficult to address questions like "what would happen to the total cost if the 
-request arrival intensity is doubled and the processing power of servers is doubled?" Moreover,
+request arrival intensity is doubled and the processing power of servers is trippled?" Moreover,
 such data may not be available, e.g., during the design phase.
 - **Emulation and detailed model simulation**: In this case, a simulator that closely mimicks the 
 internal workings of the system is used to study performance/cost under different scenarios. Once 
@@ -87,12 +85,12 @@ the simulator and the resulting analysis has a better chance of being generaliza
 - **Mathematical analysis**: In this case, well-developed mathematical frameworks are applied to 
 analyze the system and quantify performance & cost metrics. Closed-form expressions can be obtained 
 that provide a number of useful insights about the system. However, due to the shear complexity of 
-such systems it os often impossible to do mathematical analysis without making some assumptions 
+such systems it often impossible to do mathematical analysis without making some assumptions 
 that may not hold in the real system. Some of the common assumptions are i.i.d. job inter-arrival 
 times, i.i.d service times and stationary (often Poisson) arrival process. The analysis often 
 focuses on mean values of performance and cost metrics instead of percentiles (e.g. 95th, 99th).
 
-## Example: Abstract modeling and analysis of a horizontally-scaled AWS-hosted application
+### Example: Abstract modeling and analysis of a horizontally-scaled AWS-hosted application
 
 As an example of a horizontally scaling system, consider a hypothetical application hosted 
 in a highly available and fault tolerant AWS environment consisting of an Elastic Load Balancer (ELB)
