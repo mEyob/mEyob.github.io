@@ -94,18 +94,18 @@ focuses on mean values of performance and cost metrics instead of percentiles (e
 
 As an example of a horizontally scaling system, consider a hypothetical application hosted 
 in a highly available and fault tolerant AWS environment consisting of an Elastic Load Balancer (ELB)
-and a group of EC2 servers managed in an autoscaling group. Each EC2 instance configured to run 
+and a group of EC2 servers managed in an autoscaling group. Each EC2 instance is configured to run 
 *m* copies of a specific application. Minimum and maximum number of servers is set for an 
 autoscaling group to limit the extent to which scaling actions can increase/decrease 
 the number of servers. The cost-performance trade-off of this system can be studied 
 by building a simple stochastic simulator. See [this](https://github.com/mEyob/horizontal-scaling-simulation)
-Github page for a small python package.
+mini python package.
 
-AutoScale estimates the load on the system by observing the system for some time and takes scale up/down 
-actions. One way to do that is by setting a *target load* and a *threshold*. Servers are launched when 
-the actual load is greater than the *target load + threshold*, whereas shutdown action is taken 
+AutoScale estimates the load on the system by observing the system for some time. It then takes scale up/down 
+actions based on the estimated load. One way to do that is by setting a *target load* and a *threshold*. Servers are launched when 
+the actual load is greater than the *target load + threshold*, whereas servers are shutdown 
 when the actual load is less than *target load - threshold*.
-The threshold helps in avoiding oscillatory effect by the autoscaler in an attempt to 
+The threshold helps in avoiding oscillatory effect by the autoscaler while it attempts to 
 keep the actual load exactly equal to the target load by launching/stoping servers indefinately. When a server is marked 
 for stopping, this is communicated with the load balancer so that it stops sending new requests to that server
 For more on AWS autoscaling please refer the [Autoscale user guide](https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html).
@@ -118,12 +118,12 @@ In this simulation study the following numerical values are used. The autoscalin
 minimum of *5* and maximum *20* EC2 instances. All instances are on-demand instances. 
 Each instance runs *8* copies of an application so that 
 *8* requests can be served simultaneously. Requests arrive to the system with an average arrival rate of 
-*40 requests/min* and each request on average requires *2 mins* of service. Furthermore, Inter-arrival times and 
-service times assumed to be (exponentially distributed) random variables, but data from 
+*40 requests/min* and each request on average requires *2 mins* of service. Furthermore, inter-arrival times and 
+service times are assumed to be (exponentially distributed) random variables, but data  
 collected from real system logs can also be used.
 Each EC2 server (in the simulator) could be in one of the following states: *stopped*, *launching*, *idle* or 
 *busy*. In the *stopped* state no cost is incurred. In all the other states cost is incurred at a rate
-*$0.4/hr*, which is roughly the on-demand price of an [2xlarge t3 instances](https://aws.amazon.com/ec2/pricing/on-demand/).
+*$0.4/hr*, which is roughly the on-demand price of a [2xlarge t3 instances](https://aws.amazon.com/ec2/pricing/on-demand/).
 
 Two sets of simulations are run. In the first set, Round Robin is used at the ELB and target load values 
 *0.2,0.4,0.6* and *0.8* are considered. Note that when the target load is small (e.g. *0.2*) more servers 
