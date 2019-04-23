@@ -168,7 +168,7 @@ for i in range(1,11):
 df[3:6]
 ```
 
-<center><img src="{{ site.baseurl }}/assets/img/table.jpg" align="middle" style="width: 500px; height: 300px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/table.jpg" align="middle" style="width: 700px; height: 200px" /></center>
 
 The DataFrame has 8 Columns: 
 
@@ -291,7 +291,7 @@ ax1.set_title("PDF")
 ax2.set_title("CDF")
 ```
 
-<center><img src="{{ site.baseurl }}/assets/img/dist.png" align="middle" style="width: 500px; height: 300px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/dist.png" align="middle" style="width: 700px; height: 300px" /></center>
 
 ---
 ## Finding the culprit

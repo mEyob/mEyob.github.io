@@ -106,7 +106,7 @@ actions. One way to do that is by setting a *target load* and a *threshold*. Ser
 the actual load is greater than the *target load + threshold*, whereas shutdown action is taken 
 when the actual load is less than *target load - threshold*.
 The threshold helps in avoiding oscillatory effect by the autoscaler in an attempt to 
-keep the actual load exactly at the target load by launching/stoping servers indefinately. When a server is marked 
+keep the actual load exactly equal to the target load by launching/stoping servers indefinately. When a server is marked 
 for stopping, this is communicated with the load balancer so that it stops sending new requests to that server
 For more on AWS autoscaling please refer the [Autoscale user guide](https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html).
 
@@ -114,17 +114,34 @@ Elastic Load Balancer (ELB) primarly uses *Round Robin (RR)* for request forward
 can also use *least outstanding requests* routing (also known as *JSQ*)in the classic ELB case. For more on ELB please refer 
 the [ELB user guide](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
 
-Min=5, Max=20,
-8 application copies running per EC2
-avg request rate = 40 req/min
-avg service time of requests 2 min
-Inter-arrival times and service times assumed to be exponentially distributed random variables, but 
-data from real system logs can also be used.
+In this simulation study the following numerical values are used. The autoscaling group contains a 
+minimum of *5* and maximum *20* EC2 instances. All instances are on-demand instances. 
+Each instance runs *8* copies of an application so that 
+*8* requests can be served simultaneously. Requests arrive to the system with an average arrival rate of 
+*40 requests/min* and each request on average requires *2 mins* of service. Furthermore, Inter-arrival times and 
+service times assumed to be (exponentially distributed) random variables, but data from 
+collected from real system logs can also be used.
+Each EC2 server (in the simulator) could be in one of the following states: *stopped*, *launching*, *idle* or 
+*busy*. In the *stopped* state no cost is incurred. In all the other states cost is incurred at a rate
+*$0.4/hr*, which is roughly the on-demand price of an [2xlarge t3 instances](https://aws.amazon.com/ec2/pricing/on-demand/).
 
- EC2 price 0.4$/hr (roughly the On-demand price of an xlarge t3 instances)
+Two sets of simulations are run. In the first set, Round Robin is used at the ELB and target load values 
+*0.2,0.4,0.6* and *0.8* are considered. Note that when the target load is small (e.g. *0.2*) more servers 
+are launched than when the target load is large (e.g. *0.8*). Thus, application performance should improve 
+when target load decreases while cost increases. The following figure illustrates this. 
 
+<center><img src="{{ site.baseurl }}/assets/img/roundrobin.png" align="middle" style="width: 400px; height: 300px" /></center>
 
-<center><img src="{{ site.baseurl }}/assets/img/roundrobin.png" align="middle" style="width: 500px; height: 300px" /></center>
+The right y-axis (red) shows the total cost of the system as a function of the target load (x-axis) after serving *50,000* requests, and the left y-axis shows the average response time of the *50,000* requests. Increasing the target load 
+from *0.2* to *0.4* does not change much both interms of performance and cost. On the other hand, when target load 
+is further increased to *0.6*, system cost decreases from around *158* to *132* (about *15%* decrease) but average 
+response time increased by less than *2%*. Further increasing the target load to *0.8* increases average response 
+time by about *10%* and decreases rental cost by an additional *20%*.
 
+In the figure below, the cost-performance trade-off is shown for the second set of simulations using JSQ as the 
+routing algorithm at the ELB. While the results look qualitatively the same as in the Round Robin case, the
+average response time curve depicts that JSQ performs better than Round Robin. That is, for the same amount of 
+dollar spent, JSQ gives better performance than Round Robin. This is in fact a [well known result](https://ieeexplore.ieee.org/document/8065804), and the advantage of JSQ over Round Robin comes at the expense of the communication overhead 
+introduced to communicate the number of active connections/requests between the load balancer and the servers.	
 
-<center><img src="{{ site.baseurl }}/assets/img/jsq.png" align="middle" style="width: 500px; height: 300px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/jsq.png" align="middle" style="width: 400px; height: 300px" /></center>
