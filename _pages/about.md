@@ -7,7 +7,9 @@ description: <a href="http://comnet.aalto.fi/en/">Aalto University</a>
 profile:
   align: right
   image: prof_pic.jpg
-
+  address: >
+    <p> </p>
+    <p> </p>
 news: false
 social: true
 ---
