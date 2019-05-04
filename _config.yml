@@ -29,7 +29,7 @@ google_analytics: UA-XXXXXXXXX # out your google-analytics code
 # -----------------------------------------------------------------------------
 # Blog
 # -----------------------------------------------------------------------------
-blog_name: Misikir's blog
+blog_name:
 blog_description: Short blog posts about things of interest
 
 # Pagination

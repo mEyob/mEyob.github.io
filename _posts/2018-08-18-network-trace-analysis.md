@@ -4,6 +4,7 @@ date: 2017-01-19 12:00:00
 tags: ["Data analysis", "Network traffic"]
 title: "Exploratory Data Analysis: Capturing and analyzing internet traffic"
 description: Network capture and analysis
+comments: true
 ---
 
 This notebook shows how to capture and analyze network traffic on a computer 

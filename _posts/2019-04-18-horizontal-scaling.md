@@ -4,6 +4,7 @@ date: 2019-04-19 12:00:00
 tags: ["Analysis", "Automation"]
 title: "Horizontal scaling and cost-performance optimization"
 description: Horizontal scaling
+comments: true
 ---
 
 In horizontal scaling systems, resources are added (launched) when the demand on the system increases
