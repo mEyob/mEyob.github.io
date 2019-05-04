@@ -29,7 +29,7 @@ google_analytics: UA-XXXXXXXXX # out your google-analytics code
 # -----------------------------------------------------------------------------
 # Blog
 # -----------------------------------------------------------------------------
-blog_name: 
+blog_name: Misikir's blog
 blog_description: Short blog posts about things of interest
 
 # Pagination
@@ -43,7 +43,7 @@ text:
     older: 'Older'
 
 # Comments
-disqus_shortname: al-folio # put your disqus shortname
+disqus_shortname: meyob-github-io # put your disqus shortname
 
 # Optional features
 show_social_icons:  false
