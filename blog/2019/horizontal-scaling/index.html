@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Misikir Eyob | Horizontal scaling and cost-performance optimization</title>
+  <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+">
+
+  <link rel="shortcut icon" href="/assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="/blog/2019/horizontal-scaling/">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    
+    <span class="site-title">
+        
+        <strong>Misikir</strong> Eyob
+    </span>
+    
+
+    <nav class="site-nav">
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+      <div class="trigger">
+        <!-- About -->
+        <a class="page-link" href="/">about</a>
+
+        <!-- Blog -->
+        <a class="page-link" href="/blog/">blog</a>
+
+        <!-- Pages -->
+        
+          
+        
+          
+        
+          
+        
+          
+            <a class="page-link" href="/projects/">projects</a>
+          
+        
+          
+            <a class="page-link" href="/publications/">publications</a>
+          
+        
+          
+            <a class="page-link" href="/teaching/">teaching</a>
+          
+        
+          
+        
+          
+        
+
+        <!-- CV link -->
+        <!-- <a class="page-link" href="/assets/pdf/CV.pdf">vitae</a> -->
+
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Horizontal scaling and cost-performance optimization</h1>
+    <p class="post-meta">April 19, 2019</p>
+  </header>
+
+  <article class="post-content">
+    <p>In horizontal scaling systems, resources are added (launched) when the demand on the system increases
+and removed (stopped) when demand drops and they are not needed anymore. 
+The arrival intensity and the size of jobs processed 
+in such systems usually exhibit a great deal of random variation.</p>
+
+<p>Obviously, having as many resources as possible helps in reducing the latency (response time) 
+experienced by jobs. However, this usually comes at the expense of increased operating cost, e.g.,
+rental, energy or other related costs.</p>
+
+<p><strong>The challenge:</strong> <em>To optimize the trade-off between system performance and operating cost 
+in the face of randomly varying traffic/load. To make things a bit more challenging,<br />
+there is also the so-called <strong>launch (setup) delay</strong>, the time it takes to launch/start a 
+stopped resource. This could especially be problematic during traffic surges, in which 
+case resources are launched in response to traffic increase but they are not ready yet 
+to provide service.</em></p>
+
+<h2 id="system-architecture">System architecture</h2>
+
+<p>Horizontal scalability is a basic system design feature that appears in many 
+(seamingly unrelated) domains. To name a few, <em>call center staffing</em>, <em>inventory management</em> and
+<em>highly-available and fault tolerant cloud computing</em> all leverage the benefits of 
+horizontal scaling, and hence need to address the cost-performance trade-off mentioned 
+above.</p>
+
+<p>In call centers, fewer operators would translate into less cost (salary) but also longer call 
+waiting time for customers. By contrast, increasing the number of operators would reduce call 
+waiting time but also increase the operating cost. The launch delay, in this case, is the 
+time it takes to (interview, …etc) aquire new operators.</p>
+
+<p>Similarly in a cloud computing environment, virtual machines, containers or lambda functions can be 
+launched/stopped to improve/reduce performance/cost. If the group of resources are virtual 
+machines, the launch delay is the time it takes to bootstrap a VM or start a golden image. In any
+case, a horizontally scaling system has the following basic components:</p>
+
+<ul>
+  <li><strong>Traffic source</strong>: The stream of jobs that the system is designed to serve. The traffic contributes two 
+sources of randomness that should be considered in the design phase: Inter-arrival times of jobs 
+and their sizes.</li>
+  <li><strong>Resource/Server</strong>: A server has <em>m</em> service places, in which it can serve <em>m</em> jobs simultaneously.
+If the number of jobs <em>j</em> is greater than <em>m</em>, the server applies some scheduling policy (e.g. FIFO, PS)
+to determine which jobs get processed and which jobs wait in (a) queue(s).</li>
+  <li><strong>Dispatcher</strong>: This is the interface jobs will encounter when they first arrive in the system. Its main duty is 
+assigning incoming jobs to available servers. A dispatcher can be designed to inhance service 
+availability and fault tolerance, in which case it is usually known as a <strong>load balancer</strong>.
+A dispatcher may also be designed to unbalance load, e.g. to reduce the cost of running servers 
+by packing jobs to as few servers as possible. The dispatcher employes popular algorithms such as
+<strong>Round Robin</strong>, <strong>Join the Shortest Queue (JSQ)</strong> or <strong>Random</strong> to assign jobs to servers.</li>
+  <li><strong>Resource Group Manager</strong>: This manages the cluster of resources/servers. Having a total of <em>N</em> servers
+at its disposal, of which <em>n&lt;=N</em> are currently active, it applies some scaling policy to determine the number
+of servers to launch or stop/remove based on current or estimated load.</li>
+</ul>
+
+<p>The following figure shows a black-box representation of each of the components discussed above and their interaction.</p>
+
+<center><img src="/assets/img/resource-group-arch.png" align="middle" style="width: 500px; height: 300px" /></center>
+
+<h2 id="analysis">Analysis</h2>
+<p>Quantitative analysis of horizontally scaling systems can be performed using 
+one of the following approaches.</p>
+
+<ul>
+  <li><strong>Measurement and statistical analysis</strong>: This is usually the prefered way of analysis, in which 
+relevant data such as request/job arrival times, response times, and the associated cost is collected
+from an actual system. Statistical analysis of the collected data usually produces valuable insights 
+into the currently implemented system. These insights, however, are limited to the specific system 
+and data set. It is difficult to address questions like “what would happen to the total cost if the 
+request arrival intensity is doubled and the processing power of servers is trippled?” Moreover,
+such data may not be available, e.g., during the design phase.</li>
+  <li><strong>Emulation and detailed model simulation</strong>: In this case, a simulator that closely mimicks the 
+internal workings of the system is used to study performance/cost under different scenarios. Once 
+the simulator is built, the system can be studied under all sorts of traffic intensity, load, and 
+cost models. However, this approach requires a fairly detailed model for the analysis to produce 
+a useful result. For example, in the cloud computing system, we may need to model jobs at 
+TCP-connection level or even at packet level (e.g. using NS3).</li>
+  <li><strong>Abstract model simulation</strong>: Here all interactions are abstracted into stochastic models and 
+each component is treated as a black-box. The traffic is assumed to be generated from a specific random process, 
+whose stochastic properties may or may not be known. Response times are also assumed to be drawn from some 
+(unknown) probability distribution. The black-box approach enables us to quickly develop 
+the simulator and the resulting analysis has a better chance of being generalizable.</li>
+  <li><strong>Mathematical analysis</strong>: In this case, well-developed mathematical frameworks are applied to 
+analyze the system and quantify performance &amp; cost metrics. Closed-form expressions can be obtained 
+that provide a number of useful insights about the system. However, due to the shear complexity of 
+such systems it often impossible to do mathematical analysis without making some assumptions 
+that may not hold in the real system. Some of the common assumptions are i.i.d. job inter-arrival 
+times, i.i.d service times and stationary (often Poisson) arrival process. The analysis often 
+focuses on mean values of performance and cost metrics instead of percentiles (e.g. 95th, 99th).</li>
+</ul>
+
+<h3 id="example-abstract-modeling-and-analysis-of-a-horizontally-scaled-aws-hosted-application">Example: Abstract modeling and analysis of a horizontally-scaled AWS-hosted application</h3>
+
+<p>As an example of a horizontally scaling system, consider a hypothetical application hosted 
+in a highly available and fault tolerant AWS environment consisting of an Elastic Load Balancer (ELB)
+and a group of EC2 servers managed in an autoscaling group. Each EC2 instance is configured to run 
+<em>m</em> copies of a specific application. Minimum and maximum number of servers is set for an 
+autoscaling group to limit the extent to which scaling actions can increase/decrease 
+the number of servers. The cost-performance trade-off of this system can be studied 
+by building a simple stochastic simulator. See <a href="https://github.com/mEyob/horizontal-scaling-simulation">this</a>
+mini python package.</p>
+
+<p>AutoScale estimates the load on the system by observing the system for some time. It then takes scale up/down 
+actions based on the estimated load. One way to do that is by setting a <em>target load</em> and a <em>threshold</em>. Servers are launched when 
+the actual load is greater than the <em>target load + threshold</em>, whereas servers are shutdown 
+when the actual load is less than <em>target load - threshold</em>.
+The threshold helps in avoiding oscillatory effect by the autoscaler while it attempts to 
+keep the actual load exactly equal to the target load by launching/stoping servers indefinately. When a server is marked 
+for stopping, this is communicated with the load balancer so that it stops sending new requests to that server
+For more on AWS autoscaling please refer the <a href="https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html">Autoscale user guide</a>.</p>
+
+<p>Elastic Load Balancer (ELB) primarly uses <em>Round Robin (RR)</em> for request forwarding but it 
+can also use <em>least outstanding requests</em> routing (also known as <em>JSQ</em>)in the classic ELB case. For more on ELB please refer 
+the <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html">ELB user guide</a>.</p>
+
+<p>In this simulation study the following numerical values are used. The autoscaling group contains a 
+minimum of <em>5</em> and maximum <em>20</em> EC2 instances. All instances are on-demand instances. 
+Each instance runs <em>8</em> copies of an application so that 
+<em>8</em> requests can be served simultaneously. Requests arrive to the system with an average arrival rate of 
+<em>40 requests/min</em> and each request on average requires <em>2 mins</em> of service. Furthermore, inter-arrival times and 
+service times are assumed to be (exponentially distributed) random variables, but data<br />
+collected from real system logs can also be used.
+Each EC2 server (in the simulator) could be in one of the following states: <em>stopped</em>, <em>launching</em>, <em>idle</em> or 
+<em>busy</em>. In the <em>stopped</em> state no cost is incurred. In all the other states cost is incurred at a rate
+<em>$0.4/hr</em>, which is roughly the on-demand price of a <a href="https://aws.amazon.com/ec2/pricing/on-demand/">2xlarge t3 instances</a>.</p>
+
+<p>Two sets of simulations are run. In the first set, Round Robin is used at the ELB and target load values 
+<em>0.2,0.4,0.6</em> and <em>0.8</em> are considered. Note that when the target load is small (e.g. <em>0.2</em>) more servers 
+are launched than when the target load is large (e.g. <em>0.8</em>). Thus, application performance should improve 
+when target load decreases while cost increases. The following figure illustrates this.</p>
+
+<center><img src="/assets/img/roundrobin.png" align="middle" style="width: 400px; height: 300px" /></center>
+
+<p>The right y-axis (red) shows the total cost of the system as a function of the target load (x-axis) after serving <em>50,000</em> requests, and the left y-axis shows the average response time of the <em>50,000</em> requests. Increasing the target load 
+from <em>0.2</em> to <em>0.4</em> does not change much both interms of performance and cost. On the other hand, when target load 
+is further increased to <em>0.6</em>, system cost decreases from around <em>158</em> to <em>132</em> (about <em>15%</em> decrease) but average 
+response time increased by less than <em>2%</em>. Further increasing the target load to <em>0.8</em> increases average response 
+time by about <em>10%</em> and decreases rental cost by an additional <em>20%</em>.</p>
+
+<p>In the figure below, the cost-performance trade-off is shown for the second set of simulations using JSQ as the 
+routing algorithm at the ELB. While the results look qualitatively the same as in the Round Robin case, the
+average response time curve depicts that JSQ performs better than Round Robin. That is, for the same amount of 
+dollar spent, JSQ gives better performance than Round Robin. This is in fact a <a href="https://ieeexplore.ieee.org/document/8065804">well known result</a>, and the advantage of JSQ over Round Robin comes at the expense of the communication overhead 
+introduced to communicate the number of active connections/requests between the load balancer and the servers.</p>
+
+<center><img src="/assets/img/jsq.png" align="middle" style="width: 400px; height: 300px" /></center>
+
+  </article>
+
+  
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'meyob-github-io';
+      var disqus_identifier = '/blog/2019/horizontal-scaling';
+      var disqus_title      = "Horizontal scaling and cost-performance optimization";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  
+
+</div>
+
+      </div>
+    </div>
+
+    <footer>
+
+  <div class="wrapper">
+    &copy; Copyright 2019 Misikir Eyob.
+    Powered by <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
+
+    
+  </div>
+
+</footer>
+
+
+    <!-- Load jQuery -->
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<!-- Load Common JS -->
+<script src="/assets/js/common.js"></script>
+
+
+<!-- Load KaTeX -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+<script src="/assets/js/katex.js"></script>
+
+
+
+
+<!-- Include custom icon fonts -->
+<link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/assets/css/academicons.min.css">
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-XXXXXXXXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>
