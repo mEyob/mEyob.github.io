@@ -33,9 +33,10 @@ In order to build reliable models we make the following assumptions on the error
 
 - The error e should be independent of X where X is the vector [X_1 ... X_d]. For example,
 let our linear regression model represent the power consumption of an electronic device 
-as a function of the load - P = P_0 + a L + e (P and L being the Power and Load random variables).
-Then, the probabilistic nature of e should remain unaffected whether the Load L is 10% 
-or 95%.
+as a function of the load, and let us assume the model is P = P_0 + a L + e 
+(P and L representing the Power and Load random variables, respectively).
+The independence assumption dictates that the probabilistic nature of e should remain 
+unaffected whether the Load L is 10%, 95%, or any other value.
 
 - The spread of e remains constant across all values of X. Going back to the previous example,
 e should not be more (or less) spread for the range of load values under study.
@@ -67,8 +68,8 @@ indicates how much of the variability of Y is explained by X (the independent va
 the values of X are known. By contrast, R<sup>2</sup> of 0 suggests X does not explain any of 
 the variability in Y at all. Other values between 0 and 1 lie on the spectrum accordingly.
 
-- Predicted R<sup>2 and Adjusted R<sup>2: One weakness of R<sup>2 is that it is susiptible to 
-overfitting. Predicted R<sup>2 and Adjusted R<sup>2 are aimed at mitigating this issue. Read
+- Predicted R<sup>2</sup> and Adjusted R<sup>2</sup>: One weakness of R<sup>2</sup> is that it is susiptible to 
+overfitting. Predicted R<sup>2</sup> and Adjusted R<sup>2</sup> are aimed at mitigating this issue. Read
 [this](https://statisticsbyjim.com/regression/interpret-adjusted-r-squared-predicted-r-squared-regression/)
 post for more detail.
 
