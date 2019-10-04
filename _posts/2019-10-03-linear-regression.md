@@ -15,27 +15,31 @@ comments: true
 The purpose of this blog post is to show how linear regression can be applied to analyze 
 the listing price of used cars. In this regard, linear regression is introduced more loosely 
 without having to define concepts in a strict mathematical sense. The data used in this post
-is scrapped from major used car listing websites. For more on the data see the [Data section](#1-The-data)
-The python code used to scrape the data can be found on Github.
+is scrapped from major used car listing websites. For more on the data see the [Data section](#3-The-data)
+For the python code used to scrape the data checkout my Github.
 
 To make like-for-like comparisons and analysis, used cars from the following manufacturers
 and models are considered
 
-| Manufacturer    | Model   |
-| --------------  | ----    | 
-|Toyota           |    Camry|
-|Honda            |   Accord|
-|Nissan           |   Altima|
-|Ford             |   Fusion|
-|Hyundai          |   Sonata|
-|Chevrolet        |   Malibu|
-|Volkswagen       |   Passat|
+<table style="width:100%">
+
+| Manufacturer| Model   |
+| ------------| ----    | 
+|Toyota       |    Camry|
+|Honda        |   Accord|
+|Nissan       |   Altima|
+|Ford         |   Fusion|
+|Hyundai      |   Sonata|
+|Chevrolet    |   Malibu|
+|Volkswagen   |   Passat|
+
+</table>
 
 The goal is to be able to address questions like:
 
-- 1. How much would a model X car that is driven Y miles cost?
-- 2. What is the average price of model X cars after Y miles of usage?
-- 3. How much does depriciation (w.r.t. mileage, release year) affect model A cars compared to model B?
+-  How much would a model X car that is driven Y miles cost?	
+-  What is the average price of model X cars after Y miles of usage?
+-  How much does depriciation (w.r.t. mileage, release year) affect model A cars compared to model B?
 
 That said, everything stated in this blog post is solely based on curiosity and the desire
 to apply regression to the used car market. Obviously, anyone seriously considering to buy a car
