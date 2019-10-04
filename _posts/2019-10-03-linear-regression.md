@@ -21,8 +21,42 @@ For the python code used to scrape the data checkout my Github.
 To make like-for-like comparisons and analysis, used cars from the following manufacturers
 and models are considered
 
-<table style="width:100%">
+<table style="width:50%">
+<tr>
+    <th>Manufacturer</th>
+    <th>Model</th>
+  </tr>
+  <tr>
+    <td>Toyota</td>
+    <td>Camry</td>
+  </tr>
+  <tr>
+    <td>Honda</td>
+    <td>Accord</td>
+  </tr>
+  <tr>
+    <td>Nissan</td>
+    <td>Altima</td>
+  </tr>
+    <tr>
+    <td>Ford</td>
+    <td>Fusion</td>
+  </tr>
+    <tr>
+    <td>Hyundai</td>
+    <td>Sonata</td>
+  </tr>
+    <tr>
+    <td>Chevrolet</td>
+    <td>Malibu</td>
+  </tr>
+    <tr>
+    <td>Volkswagen</td>
+    <td>Passat</td>
+  </tr>
 
+</table>
+<div style="width: 80px;">
 | Manufacturer| Model   |
 | ------------| ----    | 
 |Toyota       |    Camry|
@@ -32,9 +66,7 @@ and models are considered
 |Hyundai      |   Sonata|
 |Chevrolet    |   Malibu|
 |Volkswagen   |   Passat|
-
-</table>
-
+</div>
 The goal is to be able to address questions like:
 
 -  How much would a model X car that is driven Y miles cost?	
