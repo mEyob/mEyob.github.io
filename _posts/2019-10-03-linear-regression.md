@@ -15,8 +15,9 @@ comments: true
 The purpose of this blog post is to show how linear regression can be applied to analyze 
 the listing price of used cars. In this regard, linear regression is introduced more loosely 
 without having to define concepts in a strict mathematical sense. The data used in this post
-is scrapped from major used car listing websites. For more on the data see the [Data section](#3-The&data)
-For the python code used to scrape the data checkout my [Github](https://github.com/mEyob/linear-regression-car-price).
+is scrapped from major used car listing websites. For more on the data see the [Data section](#3-The&data).
+You can also checkout my [Github](https://github.com/mEyob/linear-regression-car-price) if 
+you are interested in the python code used for scrapping or to access the data in csv format.
 
 To make like-for-like comparisons and analysis, used cars from the following manufacturers
 and models are considered
@@ -150,6 +151,70 @@ We will also apply *confidence* and *prediction* intervals. [This](https://www.y
 elegantly shows what their difference is and how to calculate them.
 
 ## 3. The data
+
+The data, as already mentioned in the introduction, is scrapped from car listing websites.
+The scrapped data is parsed and cleaned and the resulting data is stored in a csv file, which
+has the following format:
+
+
+<table style="width:75%">
+<tr>
+    <th>Year</th>
+    <td>Year of release, e.g. 2010, 2019</td>
+</tr>
+<tr>
+    <th>Make</th>
+    <td>Manufacturer of the car: Honda, Toyota, Nissan, Ford, Hyundai, Chevrolet and Volkswagen</td>
+</tr>
+<tr>
+    <th>Model</th>
+    <td>Accord, Camry, Altima, Fusion, Sonata, Malibu or Passat</td>
+</tr>
+<tr>
+    <th>Model detail</th>
+    <td>Trim level, e.g. for Honda LX, Sport, EX, EX-L and Touring</td>
+</tr>
+<tr>
+    <th>Price</th>
+    <td>Listing price of the car</td>
+</tr>
+<tr>
+    <th>Mileage</th>
+    <td>Mileage (in miles) posted by dealer</td>
+</tr>
+<tr>
+    <th>Website</th>
+    <td>A two letter abbreviation to identify the source website</td>
+</tr>
+</table>
+
+<table style="width:75%">
+<tr>
+    <td> </td>
+    <th>Mileage</th>
+    <th>Year</th>
+    <th>Price</th>
+</tr>
+<tr>
+    <th>Count</th>
+    <td>11018</td>
+    <td>11018</td>
+    <td>11018</td>
+</tr>
+<tr>
+    <th>Mean</th>
+    <td>48526</td>
+    <td>14556</td>
+    <td>2015</td>
+</tr>
+<tr>
+    <th>Min</th>
+    <td>5</td>
+    <td>1998</td>
+    <td>1700</td>
+</td>
+</table>
+
 - source & python code
 - Type of cars 
 - Summary statistics 
