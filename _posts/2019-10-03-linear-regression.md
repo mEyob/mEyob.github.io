@@ -188,32 +188,21 @@ has the following format:
 </tr>
 </table>
 
-<table style="width:75%">
-<tr>
-    <td> </td>
-    <th>Mileage</th>
-    <th>Year</th>
-    <th>Price</th>
-</tr>
-<tr>
-    <th>Count</th>
-    <td>11018</td>
-    <td>11018</td>
-    <td>11018</td>
-</tr>
-<tr>
-    <th>Mean</th>
-    <td>48526</td>
-    <td>14556</td>
-    <td>2015</td>
-</tr>
-<tr>
-    <th>Min</th>
-    <td>5</td>
-    <td>1998</td>
-    <td>1700</td>
-</td>
-</table>
+The following table provides valuable summary statistics of the quantitative columns
+
+<center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat.png" align="middle" style="width: 300px; height: 500px" /></center>
+
+The CSV file contains listing details of 11,018 cars. However, dealers may list the same 
+car more than one times, hoping that it will remain on top of the list. Duplicate entries 
+may lead to inaccurate analysis and prediction. Removing duplicates and running the summary
+statistics again, we can see that about half of the listings are duplicate entries.
+
+<center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat-nodup.png" align="middle" style="width: 300px; height: 500px" /></center>
+
+Going one level deeper, we can see the number of cars, the average price, average mileage and average release year 
+per manufacturer (model) below
+
+<center><img src="{{ site.baseurl }}/assets/img/per-manufac-stat.png" align="middle" style="width: 400px; height: 500px" /></center>
 
 - source & python code
 - Type of cars 
@@ -227,7 +216,7 @@ has the following format:
 ## 5. Conclusion
 
 <!--
-<center><img src="{{ site.baseurl }}/assets/img/resource-group-arch.png" align="middle" style="width: 500px; height: 300px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat.png" align="middle" style="width: 500px; height: 300px" /></center>
 -->
 
 
