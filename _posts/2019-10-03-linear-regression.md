@@ -15,8 +15,8 @@ comments: true
 The purpose of this blog post is to show how linear regression can be applied to analyze 
 the listing price of used cars. In this regard, linear regression is introduced more loosely 
 without having to define concepts in a strict mathematical sense. The data used in this post
-is scrapped from major used car listing websites. For more on the data see the [Data section](#3-The-data)
-For the python code used to scrape the data checkout my Github.
+is scrapped from major used car listing websites. For more on the data see the [Data section](#3-The&data)
+For the python code used to scrape the data checkout my [Github](https://github.com/mEyob/linear-regression-car-price).
 
 To make like-for-like comparisons and analysis, used cars from the following manufacturers
 and models are considered
@@ -56,7 +56,7 @@ and models are considered
   </tr>
 
 </table>
-<div style="width: 80px;">
+<!--
 | Manufacturer| Model   |
 | ------------| ----    | 
 |Toyota       |    Camry|
@@ -66,7 +66,9 @@ and models are considered
 |Hyundai      |   Sonata|
 |Chevrolet    |   Malibu|
 |Volkswagen   |   Passat|
-</div>
+-->
+
+
 The goal is to be able to address questions like:
 
 -  How much would a model X car that is driven Y miles cost?	
@@ -143,6 +145,9 @@ post for more detail.
 - **RMSE**: The *Root Mean Squared Error* is  the expected magnitude of prediction error. 
 RMSE = 0 represents a perfect model, and model performance decreases as RMSE increases. 
 RMSE can also be nicely decomposed into [bias and variance](https://www.youtube.com/watch?v=zrEyxfl2-a8) terms of the model.
+
+We will also apply *confidence* and *prediction* intervals. [This](https://www.youtube.com/watch?v=gNIpR8bdgUo) video
+elegantly shows what their difference is and how to calculate them.
 
 ## 3. The data
 - source & python code
