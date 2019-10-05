@@ -218,7 +218,7 @@ of the car listing data is shown in the following figure.
 The following plots clearly show that a strong negative relationship between the mileage
 and price of a car and a strong positive relationship between release date and price.
 
-<center><img src="{{ site.baseurl }}/assets/img/honda-trend-curves.png" align="middle" style="width: 600px; height: 500px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/honda-trend-curves.png" align="middle" style="width: 800px; height: 500px" /></center>
 
 Correlation matrix quantifies this relationship. It also shows the strong negative relationship 
 between Mileage and Year. Intuitively, it is highly unlikely for a 2019 model to rack up 100,000 miles
@@ -241,6 +241,15 @@ with predicted R<sup>2</sup> of 66.2%. The model variables (Mileage and Year) fa
 of the variability in Price.
 <center><img src="{{ site.baseurl }}/assets/img/honda-first-reg-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
+The Mileage-Price and Year-Price scatter plots clearly showed the need to introduce some curved regression
+function. A logarithmic or square-root type of function might be appropriate to model such curves. 
+Moreover, the trim level also should contribute to the listing price of a car. Based on these observations,
+let us encode the trim level as a categorical variable in the regression model and $$Log2$$ to transform 
+Mileage, which gives us
+
+$$Price = a_0 + a_1Log_2(Mileage) + a_2f(Year) + a_31_{\mathrm{trim=EX}} + a_41_{\mathrm{trim=EX-L}} + a_51_{\mathrm{trim=Sport}} + a_61_{\mathrm{trim=Touring}}$$
+
+<center><img src="{{ site.baseurl }}/assets/img/honda-linreg-sec-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
 - start with simple model:
 	- map car-price model to X, Y and A
