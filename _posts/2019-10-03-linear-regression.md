@@ -244,23 +244,100 @@ of the variability in Price.
 The Mileage-Price and Year-Price scatter plots clearly showed the need to introduce some curved regression
 function. A logarithmic or square-root type of function might be appropriate to model such curves. 
 Moreover, the trim level also should contribute to the listing price of a car. Based on these observations,
-let us encode the trim level as a categorical variable in the regression model and $$Log2$$ to transform 
-Mileage, which gives us
+let us encode the trim level as a categorical variable and use $$Log2$$ to transform 
+Mileage ($$M$$), which gives us
 
-$$Price = a_0 + a_1Log_2(Mileage) + a_2f(Year) + a_31_{\mathrm{trim=EX}} + a_41_{\mathrm{trim=EX-L}} + a_51_{\mathrm{trim=Sport}} + a_61_{\mathrm{trim=Touring}}$$
+$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
+
+where $$f(\mathrm{Year})=2019 - \mathrm{Year}$$ indicates how "old" the car is in terms of its release year, 
+and $$1_{\{\mathrm{cond}\}}$$ is an indicator 
+function that takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
+coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX).
+Recall, the trim levels of Honda Accord are LX, EX, EX-L, Sport and Touring.
+
+The residual plot (shown below) of this model behaves more nicely compared to the previous one.
+The residuals appear to be random with constant variance appart from a few points that went wild. 
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-linreg-sec-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
-- start with simple model:
+
+R<sup>2</sup>> on test data suggestes that we are still attributing about one-fifth ($$20\%$$) of the 
+Price variation to randomness. While this is still too large a portion to be left to chance,
+the model performance can be considered good, specially, considering the long list of 
+factors that can affect the price of a car. Coefficeints of the model are summarized 
+below.
+
+<table style="width:100%">
+<tr>
+    <th>Coefficient</th>
+    <th>Mean value</th>
+    <th>Confidence interval</th>>
+  </tr>
+  <tr>
+    <td>$$a_0$$</td>
+    <td>39574</td>
+	<td>(38338.1260978098, 40810.58653161612)</td>
+  </tr>
+  <tr>
+    <td>$$a_1$$</td>
+    <td>-1345</td>
+    <td>(-1431.4573727602524, -1260.5230930793814)</td>>
+  </tr>
+  <tr>
+    <td>$$a_2$$</td>
+    <td>-1070</td>
+    <td>(-1117.7751486454881, -1023.5573297383098)</td>>
+  </tr>
+    <tr>
+    <td>$$a_3$$</td>
+    <td>1072</td>
+    <td>(828.9440545038926, 1315.9106007924622)</td>>
+  </tr>
+    <tr>
+    <td>$$a_4$$</td>
+    <td>2805</td>
+    <td>(2586.379091716928, 3024.520754648189)</td>>
+  </tr>
+    <tr>
+    <td>$$a_5$$</td>
+    <td>1380</td>
+    <td>(1185.2169898974355, 1574.90396621278)</td>>
+  </tr>
+    <tr>
+    <td>$$a_6$$</td>
+    <td>6178</td>
+    <td>(5806.230328387069, 6550.750342426088)</td>>
+  </tr>
+</table>
+
+No intuitive explanation can be given for the intercept coefficint $$a_0$$.
+Coefficients $$a_3 ... a_6$$ represent the amount of money to be added on the base trim
+to upgrade to the respective trim.
+
+$$a_1 = -1345$$ can be called the slop of depreciation w.r.t. mileage. That is, 
+for every 1 unit increase in $$Log_2(\mathrm{Mileage})$$ the value of the (Honda Accord)
+car depreciates by about 1200 to 1400 dollars. Since the logarithm is in base two,
+this means every time the mileage doubles, the car depreciates by 1200 to 1400 dollars.
+On the other hand, $$a_2$$ lets us that the year-over-year depreciation is about 1000 to 
+1100. 
+
+The following figure shows the predicted depreciation as a function of Mileage and Year
+assuming a Honda Accord EX-L car is driven 15000 miles per year.
+
+<center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
+
+
+## 5. Conclusion
+
+<!--
+
+	- start with simple model:
 	- map car-price model to X, Y and A
 	- mention standardizing 
 	- Check assumptions: random residuals that are indpendent of the observations
 	- examine R2 and RMSE 
 - Add more feature(s) and/or transformations
-## 5. Conclusion
 
-<!--
-<center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat.png" align="middle" style="width: 500px; height: 300px" /></center>
 -->
 
 
