@@ -252,7 +252,8 @@ $$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathr
 where $$f(\mathrm{Year})=2019 - \mathrm{Year}$$ indicates how "old" the car is in terms of its release year, 
 and $$1_{\{\mathrm{cond}\}}$$ is an indicator 
 function that takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
-coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX).
+coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX)
+to upgrade to the respective trim level.
 Recall, the trim levels of Honda Accord are LX, EX, EX-L, Sport and Touring.
 
 The residual plot (shown below) of this model behaves more nicely compared to the previous one.
@@ -267,7 +268,7 @@ the model performance can be considered good, specially, considering the long li
 factors that can affect the price of a car. Coefficeints of the model are summarized 
 below.
 
-<table style="width:100%">
+<table style="width:90%">
 <tr>
     <th>Coefficient</th>
     <th>Mean value</th>
@@ -314,12 +315,12 @@ No intuitive explanation can be given for the intercept coefficint $$a_0$$.
 Coefficients $$a_3 ... a_6$$ represent the amount of money to be added on the base trim
 to upgrade to the respective trim.
 
-$$a_1 = -1345$$ can be called the slop of depreciation w.r.t. mileage. That is, 
+$$a_1$$ can be regarded as the **slop of depreciation with respect to mileage**. That is, 
 for every 1 unit increase in $$Log_2(\mathrm{Mileage})$$ the value of the (Honda Accord)
 car depreciates by about 1200 to 1400 dollars. Since the logarithm is in base two,
 this means every time the mileage doubles, the car depreciates by 1200 to 1400 dollars.
-On the other hand, $$a_2$$ lets us that the year-over-year depreciation is about 1000 to 
-1100. 
+On the other hand, $$a_2$$, the **slop of depreciation with respect to release year**, 
+tells us that the year-over-year depreciation is about 1000 to 1100. 
 
 The following figure shows the predicted depreciation as a function of Mileage and Year
 assuming a Honda Accord EX-L car is driven 15000 miles per year.
