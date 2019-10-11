@@ -58,18 +58,6 @@ and models are considered
   </tr>
 
 </table>
-<!--
-| Manufacturer| Model   |
-| ------------| ----    | 
-|Toyota       |    Camry|
-|Honda        |   Accord|
-|Nissan       |   Altima|
-|Ford         |   Fusion|
-|Hyundai      |   Sonata|
-|Chevrolet    |   Malibu|
-|Volkswagen   |   Passat|
--->
-
 
 The goal is to be able to address questions like:
 
@@ -247,9 +235,9 @@ Moreover, the trim level also should contribute to the listing price of a car. B
 let us encode the trim level as a categorical variable and use $$Log2$$ to transform 
 Mileage ($$M$$), which gives us
 
-$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
+$$Price = a_0 + a_1Log_2(M) + a_2f(Y) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
 
-where $$f(\mathrm{Year})=2019 - \mathrm{Year}$$ indicates how "old" the car is in terms of its release year, 
+where $$f(\mathrm{Y})=2019 - \mathrm{Year}$$ indicates how "old" the car is in terms of its release year, 
 and $$1_{\{\mathrm{cond}\}}$$ is an indicator 
 function that takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
 coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX)
@@ -268,48 +256,15 @@ the model performance can be considered good, specially, considering the long li
 factors that can affect the price of a car. Coefficeints of the model are summarized 
 below.
 
-<table style="width:90%">
-<tr>
-    <th>Coefficient</th>
-    <th>Mean value</th>
-    <th>Confidence interval</th>>
-  </tr>
-  <tr>
-    <td>$$a_0$$</td>
-    <td>39574</td>
-	<td>(38338.1260978098, 40810.58653161612)</td>
-  </tr>
-  <tr>
-    <td>$$a_1$$</td>
-    <td>-1345</td>
-    <td>(-1431.4573727602524, -1260.5230930793814)</td>>
-  </tr>
-  <tr>
-    <td>$$a_2$$</td>
-    <td>-1070</td>
-    <td>(-1117.7751486454881, -1023.5573297383098)</td>>
-  </tr>
-    <tr>
-    <td>$$a_3$$</td>
-    <td>1072</td>
-    <td>(828.9440545038926, 1315.9106007924622)</td>>
-  </tr>
-    <tr>
-    <td>$$a_4$$</td>
-    <td>2805</td>
-    <td>(2586.379091716928, 3024.520754648189)</td>>
-  </tr>
-    <tr>
-    <td>$$a_5$$</td>
-    <td>1380</td>
-    <td>(1185.2169898974355, 1574.90396621278)</td>>
-  </tr>
-    <tr>
-    <td>$$a_6$$</td>
-    <td>6178</td>
-    <td>(5806.230328387069, 6550.750342426088)</td>>
-  </tr>
-</table>
+|Coefficient | Mean value| Confidence interval ($$95\%$$)|
+|------------|-----------|-------------------------------|
+|$$a_0$$     |39574      |(38338, 40810)                 |
+|$$a_1$$     |-1345      |(-1431, -1260)                 |
+|$$a_2$$     |-1070      |(-1117, -1023)                 |
+|$$a_3$$     |1072       |   (828, 1315)                 |
+|$$a_4$$     |2805       |  (2586, 3024)                 |
+|$$a_5$$     |1380       |  (1185, 1574)                 |
+|$$a_6$$     |6178       |  (5806, 6550)                 |
 
 No intuitive explanation can be given for the intercept coefficint $$a_0$$.
 Coefficients $$a_3 ... a_6$$ represent the amount of money to be added on the base trim
