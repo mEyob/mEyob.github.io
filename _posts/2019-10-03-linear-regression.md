@@ -262,7 +262,7 @@ The residuals appear to be random with constant variance appart from a few point
 <center><img src="{{ site.baseurl }}/assets/img/honda-linreg-sec-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
 
-R<sup>2</sup>> on test data suggestes that we are still attributing about one-fifth ($$20\%$$) of the 
+R<sup>2</sup> on test data suggestes that we are still attributing about one-fifth ($$20\%$$) of the 
 Price variation to randomness. While this is still too large a portion to be left to chance,
 the model performance can be considered good, specially, considering the long list of 
 factors that can affect the price of a car. Coefficeints of the model are summarized 
@@ -322,7 +322,7 @@ this means every time the mileage doubles, the car depreciates by 1200 to 1400 d
 On the other hand, $$a_2$$, the **slop of depreciation with respect to release year**, 
 tells us that the year-over-year depreciation is about 1000 to 1100. 
 
-The following figure shows the predicted depreciation as a function of Mileage and Year
+The following figure shows the predicted average depreciation as a function of Mileage and Year
 assuming a Honda Accord EX-L car is driven 15000 miles per year.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
