@@ -235,11 +235,11 @@ Moreover, the trim level also should contribute to the listing price of a car. B
 let us encode the trim level as a categorical variable and use $$Log2$$ to transform 
 Mileage ($$M$$), which gives us
 
-$$Price = a_0 + a_1Log_2(M) + a_2f(Y) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
+$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
 
-where $$f(\mathrm{Y})=2019 - \mathrm{Year}$$ indicates how "old" the car is in terms of its release year, 
-and $$1_{\{\mathrm{cond}\}}$$ is an indicator 
-function that takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
+where $$f(\mathrm{Yr})=2019 - \mathrm{Year}$$ indicates the "age" of the car in terms of its release year. 
+The *age* of a 2016 Honda Accord will, therefore, be 3
+The indicator function $$1_{\{\mathrm{cond}\}}$$ takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
 coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX)
 to upgrade to the respective trim level.
 Recall, the trim levels of Honda Accord are LX, EX, EX-L, Sport and Touring.
@@ -277,10 +277,23 @@ this means every time the mileage doubles, the car depreciates by 1200 to 1400 d
 On the other hand, $$a_2$$, the **slop of depreciation with respect to release year**, 
 tells us that the year-over-year depreciation is about 1000 to 1100. 
 
-The following figure shows the predicted average depreciation as a function of Mileage and Year
-assuming a Honda Accord EX-L car is driven 15000 miles per year.
+The following figure shows the predicted average depreciation as a function of *Mileage* and *Year*
+for a Honda Accord EX-L car. "*Year*", in this case, is *2019 - release year*.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
+
+Similarly for Toyota Camry
+
+$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{XLE}\}} + a_41_{\{\mathrm{XSE}\}} + a_51_{\{\mathrm{Hybrid}\}}$$,
+
+|Coefficient | Mean value| Confidence interval ($$95\%$$)|
+|------------|-----------|-------------------------------|
+|$$a_0$$     |39574      |(37490, 40554)                 |
+|$$a_1$$     |-1337      |(-1440, -1233)                 |
+|$$a_2$$     |-931       |(-961, -900)                   |
+|$$a_3$$     |1110       |   (883, 1337)                 |
+|$$a_4$$     |1667       |  (1248, 2085)                 |
+|$$a_5$$     |2301       |  (1787, 2816)                 |
 
 
 ## 5. Conclusion
