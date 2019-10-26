@@ -10,7 +10,7 @@ a real-world problem."
 comments: true
 ---
 
-## 1. Introduction
+### 1. Introduction
 
 The purpose of this blog post is to explore the possibility of applying linear regression to 
 describe, analyze and predict
@@ -69,7 +69,7 @@ That said, everything stated in this blog post is solely based on curiosity and 
 to apply regression to the used car market. Obviously, anyone seriously considering to buy a car
 should seek expert advice.
 
-## 2. The theory
+### 2. The theory
 
 Linear regression inherently assumes that there is a linear relationship between a 
 random variable (the dependent variable) and another set of random variable(s)
@@ -139,7 +139,7 @@ RMSE can also be nicely decomposed into [bias and variance](https://www.youtube.
 We will also apply *confidence* and *prediction* intervals. [This](https://www.youtube.com/watch?v=gNIpR8bdgUo) video
 elegantly shows what their difference is and how to calculate them.
 
-## 3. The data
+### 3. The data
 
 The data, as already mentioned in the introduction, is scrapped from car listing websites.
 The scrapped data is parsed and cleaned and the resulting data is stored in a csv file, which
@@ -182,9 +182,10 @@ The following table provides valuable summary statistics of the quantitative col
 <center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat.png" align="middle" style="width: 300px; height: 400px" /></center>
 
 The CSV file contains listing details of 11,018 cars. However, dealers may list the same 
-car more than one times, hoping that it will remain on top of the list. Duplicate entries 
-may lead to inaccurate analysis and prediction. Removing duplicates and running the summary
-statistics again, we can see that about half of the listings are duplicate entries.
+car more than once to improve its chance of being discovered among other cars. Duplicate entries 
+may lead to inaccurate analysis and prediction. We, therefore, need to remove duplicates and run
+the summary statistics again. Doing so reveals that about half of the listings are duplicate entries
+as shown below.
 
 <center><img src="{{ site.baseurl }}/assets/img/cars-summary-stat-nodup.png" align="middle" style="width: 300px; height: 400px" /></center>
 
@@ -196,15 +197,16 @@ the average price, average mileage and average release year per manufacturer (mo
 Out of the 6396 unique cars listed, 1540 are Nissan Altima, 1317 are Toyota Camry, 1058 are Honda Accord
 and so on.
 
-## 4. Analysis
+### 4. Analysis
 
-Let us start the analysis by studying the price of honda accord cars. Summary statistics
-of the car listing data is shown in the following figure.
+#### Honda Accord
+
+Summary statistics for used Honda Accord cars in the data set:
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-describe.png" align="middle" style="width: 400px; height: 400px" /></center>
 
-The following plots clearly show that a strong negative relationship between the mileage
-and price of a car and a strong positive relationship between release date and price.
+The following plots reveal the strong negative relationship between mileage
+and price and the strong positive relationship between release year and price.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-trend-curves.png" align="middle" style="width: 800px; height: 500px" /></center>
 
@@ -212,12 +214,10 @@ Correlation matrix quantifies this relationship. It also shows the strong negati
 between Mileage and Year. Intuitively, it is highly unlikely for a 2019 model to rack up 100,000 miles
 as it is equally unlikely for a 2008 model to have a mileage of 10,000 miles.
 
-<center><img src="{{ site.baseurl }}/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 300px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 250px" /></center>
 
-### Regression
-
-Recall a linear regression model is of the form $$Y = a_0 + a_1X_1 + ... + a_dX_d +e$$. 
-Let us first consider a simple model where $$Y=Price$$, $$d=2$$, $$X_1=std(Mileage)$$ and $$X_2=std(Year)$$,
+Recall that a linear regression model is of the form $$Y = a_0 + a_1X_1 + ... + a_dX_d +e$$. 
+<!--Let us first consider a simple model where $$Y=Price$$, $$d=2$$, $$X_1=std(Mileage)$$ and $$X_2=std(Year)$$,
 where $$std()$$ is a [standardization](https://en.wikipedia.org/wiki/Standard_score) function.
 We then fit the model, check the error term $$e$$ (also called residual) to validate the 
 [assumptions](#2-theory) of linear regression, and assess model performance.
@@ -234,27 +234,33 @@ function. A logarithmic or square-root type of function might be appropriate to 
 Moreover, the trim level also should contribute to the listing price of a car. Based on these observations,
 let us encode the trim level as a categorical variable and use $$Log2$$ to transform 
 Mileage ($$M$$), which gives us
+-->
+In our case, the feature set (the $$X$$ vector) consists of *mileage*, *release year*, and *trim level*. 
+Since trim level is a categorical variable, we need to [dummy-encode](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)) it before it can be used in a regression model. 
+
+Even with such a small feature set, one can come up with a plethora of models. Let us consider the model
+
 
 $$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
 
-where $$f(\mathrm{Yr})=2019 - \mathrm{Year}$$ indicates the "age" of the car in terms of its release year. 
-The *age* of a 2016 Honda Accord will, therefore, be 3
+where $$Log_2(M)$$ is logarithm of *mileage* in base 2, and $$f(\mathrm{Yr})=2019 - \mathrm{Year}$$ indicates the "age" of the car in terms of its release year. In this respect, the *age* of a 2016 Honda Accord is 3.
 The indicator function $$1_{\{\mathrm{cond}\}}$$ takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
 coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX)
 to upgrade to the respective trim level.
 Recall, the trim levels of Honda Accord are LX, EX, EX-L, Sport and Touring.
 
-The residual plot (shown below) of this model behaves more nicely compared to the previous one.
-The residuals appear to be random with constant variance appart from a few points that went wild. 
+The residual plot (shown below) of this model behaves reasonably well. That  is,
+the residuals appear to be random with constant variance appart from a few points that depict wild variation. 
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-linreg-sec-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
 
-R<sup>2</sup> on test data suggestes that we are still attributing about one-fifth ($$20\%$$) of the 
+R<sup>2</sup> score of $$83.7\%$$ (on test data) tells us that the model attributes about one-fifth ($$16.3\%$$) of the 
 Price variation to randomness. While this is still too large a portion to be left to chance,
 the model performance can be considered good, specially, considering the long list of 
-factors that can affect the price of a car. Coefficeints of the model are summarized 
-below.
+factors that can affect the price of a car. The following table summarizes the mean and confidence interval
+of model coefficeints obtained by repeatedly training the model, while each time  
+a random selection of training/testing set is used.
 
 |Coefficient | Mean value| Confidence interval ($$95\%$$)|
 |------------|-----------|-------------------------------|
@@ -278,13 +284,21 @@ On the other hand, $$a_2$$, the **slop of depreciation with respect to release y
 tells us that the year-over-year depreciation is about 1000 to 1100. 
 
 The following figure shows the predicted average depreciation as a function of *Mileage* and *Year*
-for a Honda Accord EX-L car. "*Year*", in this case, is *2019 - release year*.
+for a Honda Accord EX-L car. Recall that "*Year*", in this case, is *2019 - release year*.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
 
-Similarly for Toyota Camry
+<!--
+Whatever is written below is a draft
+-->
+#### Toyota Camry
+
+Similarly, for Toyota camry, the regression model is
 
 $$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{XLE}\}} + a_41_{\{\mathrm{XSE}\}} + a_51_{\{\mathrm{Hybrid}\}}$$,
+
+where XLE, XSE, and Hybrid are possible upgrades to the baseline models (LE or SE). Coefficients and their 
+confidence intervals are obtained following the same approach as above.
 
 |Coefficient | Mean value| Confidence interval ($$95\%$$)|
 |------------|-----------|-------------------------------|
@@ -295,8 +309,16 @@ $$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{XLE}\}} + a_41_{\{\math
 |$$a_4$$     |1667       |  (1248, 2085)                 |
 |$$a_5$$     |2301       |  (1787, 2816)                 |
 
+Again, $$a_1$$ is the **slop of depreciation with respect to mileage**. As was the case 
+for Honda Accord, a Toyota Camry loses $1200 to $1400 in value everytime the mileage doubles.
 
-## 5. Conclusion
+Depreciation with respect to the release year appears to be slightly less (about $100) compared to Honda
+Accord.
+
+Coefficients $$a_3$$ to $$a_5$$ indicate the average amount to add to the base trim level to 
+upgrade to the respective trim level.
+
+### 5. Conclusion
 
 <!--
 
