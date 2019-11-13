@@ -20,8 +20,7 @@ is scrapped from major used car listing websites. For more on the data see the [
 You can also checkout my [Github](https://github.com/mEyob/linear-regression-car-price) page if 
 you are interested in the python code used for scrapping or if you want to download the data in csv format.
 
-To make like-for-like comparisons and analysis, used cars from the following manufacturers
-and models are considered
+To make like-for-like comparisons and analysis, the following mid-sized sedans are considered.
 
 <table style="width:50%">
 <tr>
@@ -199,12 +198,6 @@ and so on.
 
 ### 4. Analysis
 
-#### Honda Accord
-
-Summary statistics for used Honda Accord cars in the data set:
-
-<center><img src="{{ site.baseurl }}/assets/img/honda-describe.png" align="middle" style="width: 400px; height: 400px" /></center>
-
 The following plots reveal the strong negative relationship between mileage
 and price and the strong positive relationship between release year and price.
 
@@ -216,25 +209,6 @@ as it is equally unlikely for a 2008 model to have a mileage of 10,000 miles.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 250px" /></center>
 
-Recall that a linear regression model is of the form $$Y = a_0 + a_1X_1 + ... + a_dX_d +e$$. 
-<!--Let us first consider a simple model where $$Y=Price$$, $$d=2$$, $$X_1=std(Mileage)$$ and $$X_2=std(Year)$$,
-where $$std()$$ is a [standardization](https://en.wikipedia.org/wiki/Standard_score) function.
-We then fit the model, check the error term $$e$$ (also called residual) to validate the 
-[assumptions](#2-theory) of linear regression, and assess model performance.
-
-However, as shown below, this model violates one of the assumptions as the variance of the residuals 
-increases w.r.t the fitted value (i.e. residuals become more widely spread along the horizontal axis). 
-Model performance is not great as well,
-with predicted R<sup>2</sup> of 66.2%. The model variables (Mileage and Year) fail to explain about 40%
-of the variability in Price.
-<center><img src="{{ site.baseurl }}/assets/img/honda-first-reg-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
-
-The Mileage-Price and Year-Price scatter plots clearly showed the need to introduce some curved regression
-function. A logarithmic or square-root type of function might be appropriate to model such curves. 
-Moreover, the trim level also should contribute to the listing price of a car. Based on these observations,
-let us encode the trim level as a categorical variable and use $$Log2$$ to transform 
-Mileage ($$M$$), which gives us
--->
 In our case, the feature set (the $$X$$ vector) consists of *mileage*, *release year*, and *trim level*. 
 Since trim level is a categorical variable, we need to [dummy-encode](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)) it before it can be used in a regression model. 
 
@@ -243,80 +217,21 @@ Even with such a small feature set, one can come up with a plethora of models. L
 
 $$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
 
-where $$Log_2(M)$$ is logarithm of *mileage* in base 2, and $$f(\mathrm{Yr})=2019 - \mathrm{Year}$$ indicates the "age" of the car in terms of its release year. In this respect, the *age* of a 2016 Honda Accord is 3.
-The indicator function $$1_{\{\mathrm{cond}\}}$$ takes value $$1$$ when the condition *cond* holds true, otherwise it is $$0$$. Therefore, 
-coefficients $$a_3 ... a_6$$ represent the dollar amount to be added to the base trim level (LX)
-to upgrade to the respective trim level.
-Recall, the trim levels of Honda Accord are LX, EX, EX-L, Sport and Touring.
-
-The residual plot (shown below) of this model behaves reasonably well. That  is,
-the residuals appear to be random with constant variance appart from a few points that depict wild variation. 
-
-<center><img src="{{ site.baseurl }}/assets/img/honda-linreg-sec-attempt.png" align="middle" style="width: 600px; height: 600px" /></center>
 
 
-R<sup>2</sup> score of $$83.7\%$$ (on test data) tells us that the model attributes about one-fifth ($$16.3\%$$) of the 
-Price variation to randomness. While this is still too large a portion to be left to chance,
-the model performance can be considered good, specially, considering the long list of 
-factors that can affect the price of a car. The following table summarizes the mean and confidence interval
-of model coefficeints obtained by repeatedly training the model, while each time  
-a random selection of training/testing set is used.
+|Make and Model|Count|Coefficients ($$a_1, $$a_2$$) |$$R^2^\mathrm{+}$$    | RMSE($) |
+|--------------|-----|------------------------------|-----------|---------|
+|Ford Fusion   |743  |     (-1180, -920)            |   81.2%   | 1543    |
+|Honda Accord  |1015 |     (-1350, -1050)           |   87.2%   | 1888    |
+|Hyundai Sonata|687  |     (-1200, -770)            |   80.3%   | 1302    |
+|Nissan Altima |1434 |     (-1250, -780)            |   70.9%   | 1217    |
+|Toyota Camry  |1172 |     (-770, -1010)            |   77.2%   | 1510    |
 
-|Coefficient | Mean value| Confidence interval ($$95\%$$)|
-|------------|-----------|-------------------------------|
-|$$a_0$$     |39574      |(38338, 40810)                 |
-|$$a_1$$     |-1345      |(-1431, -1260)                 |
-|$$a_2$$     |-1070      |(-1117, -1023)                 |
-|$$a_3$$     |1072       |   (828, 1315)                 |
-|$$a_4$$     |2805       |  (2586, 3024)                 |
-|$$a_5$$     |1380       |  (1185, 1574)                 |
-|$$a_6$$     |6178       |  (5806, 6550)                 |
+$$\mathrm{+}$$ The score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance)
 
-No intuitive explanation can be given for the intercept coefficint $$a_0$$.
-Coefficients $$a_3 ... a_6$$ represent the amount of money to be added on the base trim
-to upgrade to the respective trim.
 
-$$a_1$$ can be regarded as the **slop of depreciation with respect to mileage**. That is, 
-for every 1 unit increase in $$Log_2(\mathrm{Mileage})$$ the value of the (Honda Accord)
-car depreciates by about 1200 to 1400 dollars. Since the logarithm is in base two,
-this means every time the mileage doubles, the car depreciates by 1200 to 1400 dollars.
-On the other hand, $$a_2$$, the **slop of depreciation with respect to release year**, 
-tells us that the year-over-year depreciation is about 1000 to 1100. 
-
-The following figure shows the predicted average depreciation as a function of *Mileage* and *Year*
-for a Honda Accord EX-L car. Recall that "*Year*", in this case, is *2019 - release year*.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
-
-<!--
-Whatever is written below is a draft
--->
-#### Toyota Camry
-
-Similarly, for Toyota camry, the regression model is
-
-$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{XLE}\}} + a_41_{\{\mathrm{XSE}\}} + a_51_{\{\mathrm{Hybrid}\}}$$,
-
-where XLE, XSE, and Hybrid are possible upgrades to the baseline models (LE or SE). Coefficients and their 
-confidence intervals are obtained following the same approach as above.
-
-|Coefficient | Mean value| Confidence interval ($$95\%$$)|
-|------------|-----------|-------------------------------|
-|$$a_0$$     |39574      |(37490, 40554)                 |
-|$$a_1$$     |-1337      |(-1440, -1233)                 |
-|$$a_2$$     |-931       |(-961, -900)                   |
-|$$a_3$$     |1110       |   (883, 1337)                 |
-|$$a_4$$     |1667       |  (1248, 2085)                 |
-|$$a_5$$     |2301       |  (1787, 2816)                 |
-
-Again, $$a_1$$ is the **slop of depreciation with respect to mileage**. As was the case 
-for Honda Accord, a Toyota Camry loses $1200 to $1400 in value everytime the mileage doubles.
-
-Depreciation with respect to the release year appears to be slightly less (about $100) compared to Honda
-Accord.
-
-Coefficients $$a_3$$ to $$a_5$$ indicate the average amount to add to the base trim level to 
-upgrade to the respective trim level.
 
 ### 5. Conclusion
 
