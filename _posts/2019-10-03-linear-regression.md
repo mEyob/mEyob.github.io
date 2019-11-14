@@ -284,20 +284,40 @@ axis and logarithmically in the *Mileage* axis.
 
 #### 4.2 Prediction and comparison
 
+The regression models we built can be used to predict the value of a car as well as making inference.
+Typcial questions we are interested in prediction are "What is the average price 
+of used cars from model X, Year Y, trim T with mileage M?" or "What is the price range for a particular
+used car from model X, Year Y, trim T with mileage M?". The former question is answered using the 
+the regression line and calculating a *confidence interval* around it, while the latter is addressed by 
+calculating a *prediction interval* along the regression line.
 
+For example, the predicted average price of the base trim-level (LE) 2016 Toyota Camry cars at 40000 miles is 
+
+$$P(40000, 2016, T_1) = 30392 + -770 \log_{2}(40000) -1010 (2019 - 2016) + 0 = 15590$$
+
+with a narrow 95% confidence interval of $$[15490, 15690]$$ while the 95% prediction interval is 
+$$[11990, 19190]$$. Roughly speaking, this means there is a 95% chance that a 2016 Toyota Camry LE car
+will have a listing price between $$\$12,000$$ and $$\$19,000$$ at $$40000$$ miles.
+
+If we compare these numbers to a 2016 Hyundai Sonata car at 40000 miles, we get 
+
+$$P(40000, 2016, T_1) = 34093 + -1200 \log_{2}(40000) -770 (2019 - 2016) + 0 = 13438$$
+
+with confidence and prediction intervals of $$[13318, 13558]$$ and $$[10038, 16838]$$, respectively.
+
+In some cases, the prediction intervals can be too wide to be useful, specially compared 
+to the narrow confidence intervals for the average listing price. However, considering 
+the long list of factors that can affect the price of a car, this should not be surprising 
+since the regression model only uses mileage, year, and trim level to predict price. 
 
 ### 5. Conclusion
 
-<!--
+In this post we have seen how a simple approach such as linear regression can be applied 
+to infere and predict the listing price of used mid-sized sedans.
 
-	- start with simple model:
-	- map car-price model to X, Y and A
-	- mention standardizing 
-	- Check assumptions: random residuals that are indpendent of the observations
-	- examine R2 and RMSE 
-- Add more feature(s) and/or transformations
-
--->
+check: assumptions on residuals and multi-colinearity
+Prediction only on data points that are well represented in the training set. Look out 
+for combinations resulting in rare data point.
 
 
 
