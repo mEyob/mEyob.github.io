@@ -198,38 +198,64 @@ and so on.
 
 ### 4. Analysis
 
-The following plots reveal the strong negative relationship between mileage
-and price and the strong positive relationship between release year and price.
+Here, the goal is to build a multi-linear regression model that predicts (summarizes) the 
+*Listing Price* of a used mid-size sedan car based on its *Mileage*, *Release (Model) Year*, and *Trim level*.
+We'll build separate regression models for each of the cars listed above, excluding VW Passat 
+and Chevrolet Malibu. 
+
+Before jumping into building the regression models, let us examine how *Price* tends to change 
+with respect to *Mileage* and *Year* by taking the Honda Accord data set as an example. The following plots reveal 
+the strong negative relationship between mileage and price and the strong positive relationship between release year and price.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-trend-curves.png" align="middle" style="width: 800px; height: 500px" /></center>
 
-Correlation matrix quantifies this relationship. It also shows the strong negative relationship 
+The correlation matrix shown below quantifies this relationship. It also shows the strong negative relationship 
 between Mileage and Year. Intuitively, it is highly unlikely for a 2019 model to rack up 100,000 miles
 as it is equally unlikely for a 2008 model to have a mileage of 10,000 miles.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 250px" /></center>
 
-In our case, the feature set (the $$X$$ vector) consists of *mileage*, *release year*, and *trim level*. 
-Since trim level is a categorical variable, we need to [dummy-encode](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)) it before it can be used in a regression model. 
+For more on this and other analysis related to regression model building see [this](https://github.com/mEyob/linear-regression-car-price/blob/master/analysis.ipynb) python notebook.
 
-Even with such a small feature set, one can come up with a plethora of models. Let us consider the model
+#### 4.1 Regression models
+After considering a number of features and feature transforms the following regression function that better expresses the relationship between the independent variables (*Mileage*, *Year*, *Trim level*)and dependent variable (*Listing Price*)is  chosen:
+
+$$P_i(M_i, Y_i, T_i) = a_0 + a_1 log2(M_i) + a_2 (2019 - Y_i) + \sum_{j=2}^{n} a_{j+1} 1_{\{T_j=T_i\}}$$,
+
+where $$P_i,M_i, Y_i, \text{ and }T_i$$ are the *Price, Mileage, Year,* and *Trim* of car $$i$$, respectively.
+$$a_0, a_1, a_2$$ are the intercept, coefficient w.r.t *Mileage*, and coefficient w.r.t. *Year*.
+Since trim level is a categorical variable, we need to [dummy-encode](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)) it before it can be used in a regression model. Assuming there are $$n$$ trim levels of a car model $$n-1$$ dummy variables are 
+created using the summation of the indicators in the last term of the above equation. 
+This results in one dummy variable for each trim level except the base trim-level. Coefficeint $$a_{j+1}$$,
+therefore, represents the price difference between the base trim level and the $$j^{th}$$ trim level.
+
+Note that *Mileage* and *Year* are transformed using functions $$f(M)=log2(M)$$ and $$g(Y) = 2019 - Y$$.
+The log transformation of Mileage not only yields better model performance it can also be motivated by the 
+fact that the sharpest decline in Price happens during the first few (thousand) miles. Once a car makes it
+into tens of thousands of miles, the rate at which the Price decreases should slow down. Logarithmic 
+functions are one of several functions that could capture this relationship between *Mileage* and *Price*.
+
+When it comes to the *Year*, what affects the *Price* of a car is how old the model is relative to 
+the newest model, which is why the transformation $$g(Y) = 2019 - Y$$ is used. For example, a $$2016$$
+Toyota Camry is $$3$$ years old and should have a lower price than a $$2017$$ ($$2$$ years old) Toyota
+Camry if everything else is kept constant. 
+
+Five elastic net regularised models are trained for Ford Fusion, Honda Accord, Hyundai Sonata, Nissan Altima,
+and Toyota Camry. The following table provides the coefficients and performance metrics.
 
 
-$$Price = a_0 + a_1Log_2(M) + a_2f(Yr) + a_31_{\{\mathrm{EX}\}} + a_41_{\{\mathrm{EX-L}\}} + a_51_{\{\mathrm{Sport}\}} + a_61_{\{\mathrm{Touring}\}}$$,
+|Make and Model|Count|Coefficients ($$a_1,$$a_2$$)  |$$R^2$$<sup>+</sup>| RMSE($) |
+|--------------|-----|------------------------------|-------------------|---------|
+|Ford Fusion   |743  |     (-1180, -920)            |   81.2%           | 1543    |
+|Honda Accord  |1015 |     (-1350, -1050)           |   87.2%           | 1888    |
+|Hyundai Sonata|687  |     (-1200, -770)            |   80.3%           | 1302    |
+|Nissan Altima |1434 |     (-1250, -780)            |   70.9%           | 1217    |
+|Toyota Camry  |1172 |     (-770, -1010)            |   77.2%           | 1510    |
+|              |     |                              |                   |         |
 
+*+* $$R^2$$ score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance)
 
-
-|Make and Model|Count|Coefficients ($$a_1, $$a_2$$) |$$R^2^\mathrm{+}$$    | RMSE($) |
-|--------------|-----|------------------------------|-----------|---------|
-|Ford Fusion   |743  |     (-1180, -920)            |   81.2%   | 1543    |
-|Honda Accord  |1015 |     (-1350, -1050)           |   87.2%   | 1888    |
-|Hyundai Sonata|687  |     (-1200, -770)            |   80.3%   | 1302    |
-|Nissan Altima |1434 |     (-1250, -780)            |   70.9%   | 1217    |
-|Toyota Camry  |1172 |     (-770, -1010)            |   77.2%   | 1510    |
-
-$$\mathrm{+}$$ The score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance)
-
-
+#### 4.2 Prediction and comparison
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
 
