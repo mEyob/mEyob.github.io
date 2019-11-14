@@ -245,15 +245,15 @@ Camry if everything else is kept constant.
 Five elastic net regularised models are trained for Ford Fusion, Honda Accord, Hyundai Sonata, Nissan Altima,
 and Toyota Camry. The following table provides the coefficients and performance metrics.
 
-||--------------||-----||------------------------------||-------------------||---------||
-||Car Model     ||Count||Coefficients($$a_1,$$a_2$$)   ||$$R^2$$<sup>+</sup>|| RMSE($) ||
-||--------------||-----||------------------------------||-------------------||---------||
-||Ford Fusion   ||743  ||     (-1180, -920)            ||   81.2%           || 1543    ||
-||Honda Accord  ||1015 ||     (-1350, -1050)           ||   87.2%           || 1888    ||
-||Hyundai Sonata||687  ||     (-1200, -770)            ||   80.3%           || 1302    ||
-||Nissan Altima ||1434 ||     (-1250, -780)            ||   70.9%           || 1217    ||
-||Toyota Camry  ||1172 ||     (-770, -1010)            ||   77.2%           || 1510    ||
-||              ||     ||                              ||                   ||         ||
+|--------------|-----|------------------------------|-------------------|---------|
+|Car Model     |Count|Coefficients($$a_1,a_2$$)     |$$R^2$$<sup>+</sup>| RMSE($) |
+|--------------|-----|------------------------------|-------------------|---------|
+|Ford Fusion   |743  |     (-1180, -920)            |   81.2%           | 1543    |
+|Honda Accord  |1015 |     (-1350, -1050)           |   87.2%           | 1888    |
+|Hyundai Sonata|687  |     (-1200, -770)            |   80.3%           | 1302    |
+|Nissan Altima |1434 |     (-1250, -780)            |   70.9%           | 1217    |
+|Toyota Camry  |1172 |     (-770, -1010)            |   77.2%           | 1510    |
+|              |     |                              |                   |         |
 
 *+* $$R^2$$ score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance)
 
@@ -269,12 +269,16 @@ car model is** with every passing year knocking off about $$\$800$$ of the value
 
 The following plots show the fitted regression models for all car models along with the data used to fit 
 the regression models. In order to simplify the plots into 2D, cars (points in the scatter plot) are 
-assumed to rack up 12000 miles per year allowing us to represent *Year* in terms of *Mileage* as $$Year = Mileage // 12000$$.
+assumed to rack up [12000 miles per year](https://www.carinsurance.com/Articles/average-miles-driven-per-year-by-state.aspx), allowing us to represent *Year* in terms of *Mileage* as $$Year = Mileage // 12000$$.
 
-<center><img src="{{ site.baseurl }}/assets/img/regfit-all.png" align="middle" style="width: 400px; height: 600px" /></center>
+<center><img src="{{ site.baseurl }}/assets/img/regfit-all.png" align="middle" style="width: 500px; height: 600px" /></center>
 
 The bottom right plot shows all five regression curves in one plot. This plot, once more, gives the visual
 confirmation that Toyota Camry loses the least amount of value to depreciation.
+
+Without the 12000 miles/year assumption, the resulting plots are 3-dimensional. The next figure 
+shows such a plot for Honda Accord. It is easy to see that *Price* decreases linearly in the *Year*
+axis and logarithmically in the *Mileage* axis.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
 
