@@ -293,7 +293,7 @@ calculating a *prediction interval* along the regression line.
 
 For example, the predicted average price of the base trim-level (LE) 2016 Toyota Camry cars at 40000 miles is 
 
-$$P(40000, 2016, T_1) = 30392 + -770 \log_{2}(40000) -1010 (2019 - 2016) + 0 = 15590$$
+$$P(40000, 2016, T_1) = 30392 -770 \log_{2}(40000) -1010 (2019 - 2016) + 0 = 15590$$
 
 with a narrow 95% confidence interval of $$[15490, 15690]$$ while the 95% prediction interval is 
 $$[11990, 19190]$$. Roughly speaking, this means there is a 95% chance that a 2016 Toyota Camry LE car
@@ -301,7 +301,7 @@ will have a listing price between $$\$12,000$$ and $$\$19,000$$ at $$40000$$ mil
 
 If we compare these numbers to a 2016 Hyundai Sonata car at 40000 miles, we get 
 
-$$P(40000, 2016, T_1) = 34093 + -1200 \log_{2}(40000) -770 (2019 - 2016) + 0 = 13438$$
+$$P(40000, 2016, T_1) = 34093 -1200 \log_{2}(40000) -770 (2019 - 2016) + 0 = 13438$$
 
 with confidence and prediction intervals of $$[13318, 13558]$$ and $$[10038, 16838]$$, respectively.
 
