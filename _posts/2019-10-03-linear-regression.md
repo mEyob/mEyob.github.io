@@ -233,9 +233,8 @@ Note that *Mileage* and *Year* are transformed using functions $$f(M)=log2(M)$$ 
 The log transformation of Mileage not only yields better model performance it can also be motivated by the 
 fact that the sharpest decline in Price happens during the first few (thousand) miles. Once a car makes it
 into tens of thousands of miles, the rate at which the Price decreases should slow down. Logarithmic 
-functions are one of several functions that could capture this relationship between *Mileage* and *Price*.
-Because the logarithm is in base $$2$$, $$a_1$$ is how much the value of a car decreases everytime 
-Mileage doubles
+functions are one of several functions that could capture this nonlinear relationship between *Mileage* and *Price*.
+Since base 2 logarithm is used, $a_1$ represents the *depreciation with respect to mileage* every time mileage doubles.
 
 When it comes to the *Year*, what affects the *Price* of a car is how old the model is relative to 
 the newest model, which is why the transformation $$g(Y) = 2019 - Y$$ is used. For example, a $$2016$$
@@ -243,10 +242,10 @@ Toyota Camry is $$3$$ years old and should have a lower price than a $$2017$$ ($
 Camry if everything else is kept constant. 
 
 Five elastic net regularised models are trained for Ford Fusion, Honda Accord, Hyundai Sonata, Nissan Altima,
-and Toyota Camry. The following table provides the coefficients and performance metrics.
+and Toyota Camry. The coefficients and performance metrics of the resulting models are shown below.
 
 |--------------|-----|------------------------------|-------------------|---------|
-|Car Model     |Count|Coefficients($$a_1,a_2$$)     |$$R^2$$<sup>+</sup>| RMSE($) |
+|Car Model     |Count<sup>*</sup>|Coefficients($$a_1,a_2$$)     |$$R^2$$<sup>*</sup>| RMSE($) |
 |--------------|-----|------------------------------|-------------------|---------|
 |Ford Fusion   |743  |     (-1180, -920)            |   81.2%           | 1543    |
 |Honda Accord  |1015 |     (-1350, -1050)           |   87.2%           | 1888    |
@@ -255,17 +254,17 @@ and Toyota Camry. The following table provides the coefficients and performance 
 |Toyota Camry  |1172 |     (-770, -1010)            |   77.2%           | 1510    |
 |              |     |                              |                   |         |
 
-*+* $$R^2$$ score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance)
+* $$R^2$$ score is calculated on a test set after outlier removal using [Cook's distance](https://en.wikipedia.org/wiki/Cook%27s_distance).
+The number of cars used to train each model after outlier removal is presented in the 'Count' column.
 
 According to the regression models, Toyota Camry has the smallest (in magnitude) coefficient w.r.t
 *Mileage* at $$a_1=-770$$. Take, for example, the price of a given Toyota Camry is $$\$20,000$$ at 500 miles. 
-The model predicts that the average price drop follows the trend $$\$19,230$$ at $$1000$$ miles, $$\$18,460$$ at
-$$2000$$ miles, $$\$17,690$$ at $$4000$$ miles and so on.
+The model predicts that the average price drop is $19,230$ at 1000 miles,  $18,460 at 2000 miles, so on.
 
-Note that coefficient $$a_1$$ represents the **depreciation with respect to mileage**, which makes Toyota Camry 
+Note that coefficient $$a_1$$ represents the *depreciation with respect to mileage*, which makes Toyota Camry 
 the best one among the five models considered for retaining much of its original value as mileage increases.
-By contrast, Nissan Altima and Hyundai Sonata exhibit the least **depreciation with respect to how old the 
-car model is** with every passing year knocking off about $$\$800$$ of the value of a car.
+By contrast, Nissan Altima and Hyundai Sonata exhibit the least *depreciation with respect to Year*, with every 
+passing year reducing the value of the car by about $800.
 
 The following plots show the fitted regression models for all car models along with the data used to fit 
 the regression models. In order to simplify the plots into 2D, cars (points in the scatter plot) are 
@@ -308,16 +307,21 @@ with confidence and prediction intervals of $$[13318, 13558]$$ and $$[10038, 168
 In some cases, the prediction intervals can be too wide to be useful, specially compared 
 to the narrow confidence intervals for the average listing price. However, considering 
 the long list of factors that can affect the price of a car, this should not be surprising 
-since the regression model only uses mileage, year, and trim level to predict price. 
+since the regression model only uses mileage, year, and trim level to predict price. The 
+intervals could be narrowed down by obtaining more data and including additional features
+such as engine type, repair history and accident history.
 
 ### 5. Conclusion
 
 In this post we have seen how a simple approach such as linear regression can be applied 
-to infere and predict the listing price of used mid-sized sedans.
+to infere and predict the listing price of used mid-sized sedans. While regression can be 
+a valuable tool to predict a continuous valued dependent variable, it also sets some assumptions
+about the predicted and predicting variables that need to be checked before the resulting 
+regression model is deemed acceptable.
 
-check: assumptions on residuals and multi-colinearity
-Prediction only on data points that are well represented in the training set. Look out 
-for combinations resulting in rare data point.
-
+Once the assumptions are checked, regression models can easily be trained with a relatively
+small amount of data. In addtion to the predicted values, the coefficients of the model also
+give some insight on the magnitude and direction of relations between the dependent and independent 
+variables.
 
 
