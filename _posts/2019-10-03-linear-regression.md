@@ -16,7 +16,8 @@ The purpose of this blog post is to explore the possibility of applying linear r
 describe, analyze and predict
 the listing price of used cars. In this regard, linear regression is introduced more loosely 
 without having to define concepts in a strict mathematical sense. The data used in this post
-is scrapped from major used car listing websites. For more on the data see the [Data section](#3-data).
+is scrapped from major used car listing websites. For more on the data and the subsequent
+analysis see [this](https://nbviewer.jupyter.org/github/mEyob/linear-regression-car-price/blob/master/analysis.ipynb) Jupyter Notebook or see the 'Data' section below. A serverless API of the final model is available [here](https://js68st2ska.execute-api.us-east-1.amazonaws.com/dev).
 You can also checkout my [Github](https://github.com/mEyob/linear-regression-car-price) page if 
 you are interested in the python code used for scrapping or if you want to download the data in csv format.
 
@@ -215,7 +216,7 @@ as it is equally unlikely for a 2008 model to have a mileage of 10,000 miles.
 
 <center><img src="{{ site.baseurl }}/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 250px" /></center>
 
-For more on this and other analysis related to regression model building see [this](https://github.com/mEyob/linear-regression-car-price/blob/master/analysis.ipynb) python notebook.
+For more on this and other analysis related to regression model building see [this](https://nbviewer.jupyter.org/github/mEyob/linear-regression-car-price/blob/master/analysis.ipynb) python notebook.
 
 #### 4.1 Regression models
 After considering a number of features and feature transforms the following regression function that better expresses the relationship between the independent variables (*Mileage*, *Year*, *Trim level*)and dependent variable (*Listing Price*)is  chosen:
@@ -313,15 +314,15 @@ such as engine type, repair history and accident history.
 
 ### 5. Conclusion
 
-In this post we have seen how a simple approach such as linear regression can be applied 
+This post illustrated how a simple approach such as linear regression can be applied 
 to infere and predict the listing price of used mid-sized sedans. While regression can be 
 a valuable tool to predict a continuous valued dependent variable, it also sets some assumptions
 about the predicted and predicting variables that need to be checked before the resulting 
-regression model is deemed acceptable.
+regression model can be deemed acceptable.
 
 Once the assumptions are checked, regression models can easily be trained with a relatively
-small amount of data. In addtion to the predicted values, the coefficients of the model also
-give some insight on the magnitude and direction of relations between the dependent and independent 
-variables.
+small amount of data, and in addtion to it's predictive power, the coefficients of the model also
+give some insight on the magnitude and direction of the relationship between the dependent and 
+independent variables.
 
 
