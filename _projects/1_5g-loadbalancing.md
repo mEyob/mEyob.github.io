@@ -1,7 +1,8 @@
 ---
 layout: page
-title: Project
-description: Network traffic can be offloaded to/from a macro cell to/from a macro cell. This project investigates the possibility of dynamic load balancing in order to save energy by shutting off small cells whenever possible.
+title: Energy-aware load balancing in 5G HetNet
+description: Network traffic can be offloaded between a macro and small cells in HetNets. This project 
+explores dynamic load balancing policies that save energy by shutting off small cells whenever possible.
 img: /assets/img/5g-lb.png
 ---
 
