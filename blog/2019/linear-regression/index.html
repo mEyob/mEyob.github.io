@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Misikir Eyob | Linear regression for assessing and predicting the market value of used cars</title>
+  <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+">
+
+  <link rel="shortcut icon" href="/assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="/blog/2019/linear-regression/">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    
+    <span class="site-title">
+        
+        <strong>Misikir</strong> Eyob
+    </span>
+    
+
+    <nav class="site-nav">
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+      <div class="trigger">
+        <!-- About -->
+        <a class="page-link" href="/">about</a>
+
+        <!-- Blog -->
+        <a class="page-link" href="/blog/">blog</a>
+
+        <!-- Pages -->
+        
+          
+        
+          
+        
+          
+        
+          
+            <a class="page-link" href="/projects/">projects</a>
+          
+        
+          
+            <a class="page-link" href="/publications/">publications</a>
+          
+        
+          
+            <a class="page-link" href="/teaching/">teaching</a>
+          
+        
+          
+        
+          
+        
+
+        <!-- CV link -->
+        <!-- <a class="page-link" href="/assets/pdf/CV.pdf">vitae</a> -->
+
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Linear regression for assessing and predicting the market value of used cars</h1>
+    <p class="post-meta">October 3, 2019</p>
+  </header>
+
+  <article class="post-content">
+    <h3 id="1-introduction">1. Introduction</h3>
+
+<p>The purpose of this blog post is to explore the possibility of applying linear regression to 
+describe, analyze and predict
+the listing price of used cars. In this regard, linear regression is introduced more loosely 
+without having to define concepts in a strict mathematical sense. The data used in this post
+is scrapped from major used car listing websites. For more on the data and the subsequent
+analysis see <a href="https://nbviewer.jupyter.org/github/mEyob/linear-regression-car-price/blob/master/analysis.ipynb">this</a> Jupyter Notebook or see the ‘Data’ section below. A serverless API of the final model is available <a href="https://js68st2ska.execute-api.us-east-1.amazonaws.com/dev">here</a>.
+You can also checkout my <a href="https://github.com/mEyob/linear-regression-car-price">Github</a> page if 
+you are interested in the python code used for scrapping or if you want to download the data in csv format.</p>
+
+<p>To make like-for-like comparisons and analysis, the following mid-sized sedans are considered.</p>
+
+<table style="width:50%">
+<tr>
+    <th>Manufacturer</th>
+    <th>Model</th>
+  </tr>
+  <tr>
+    <td>Toyota</td>
+    <td>Camry</td>
+  </tr>
+  <tr>
+    <td>Honda</td>
+    <td>Accord</td>
+  </tr>
+  <tr>
+    <td>Nissan</td>
+    <td>Altima</td>
+  </tr>
+    <tr>
+    <td>Ford</td>
+    <td>Fusion</td>
+  </tr>
+    <tr>
+    <td>Hyundai</td>
+    <td>Sonata</td>
+  </tr>
+    <tr>
+    <td>Chevrolet</td>
+    <td>Malibu</td>
+  </tr>
+    <tr>
+    <td>Volkswagen</td>
+    <td>Passat</td>
+  </tr>
+
+</table>
+
+<p>The goal is to be able to address questions like:</p>
+
+<ul>
+  <li>How much would a model X car that is driven Y miles cost?</li>
+  <li>What is the average price of model X cars after Y miles of usage?</li>
+  <li>How much does depriciation (w.r.t. mileage, release year) affect model A cars compared to model B?</li>
+</ul>
+
+<p>That said, everything stated in this blog post is solely based on curiosity and the desire
+to apply regression to the used car market. Obviously, anyone seriously considering to buy a car
+should seek expert advice.</p>
+
+<h3 id="2-the-theory">2. The theory</h3>
+
+<p>Linear regression inherently assumes that there is a linear relationship between a 
+random variable (the dependent variable) and another set of random variable(s)
+(the independent variables), i.e,</p>
+
+<p><script type="math/tex">Y = a_0 + a_1X_1 + ...+ a_dX_d + e</script>,</p>
+
+<p>where <script type="math/tex">a_0</script> is called the intercept and <script type="math/tex">a_i</script> is the coefficient for <script type="math/tex">X_i</script>.
+Often, the independent variable and the coefficients are expressed as <script type="math/tex">d+1</script>-dimensional
+vectors, i.e., <script type="math/tex">X=[1 X_1 X_2 ... X_d]</script> and <script type="math/tex">A=[a_0 a_1 ... a_d]</script></p>
+
+<p>Linear regression acknowledges the relationship between the dependent and independent 
+random variables can be non-deterministic. That is, there can be some uncertainity 
+involved in determining the value of Y evenif we have a perfect knowledge of the values 
+of the <script type="math/tex">X_i</script>s. This uncertainity is represented by the error term e in the regression 
+equation. All the uncertainity we cannot (or don’t want to) explain about Y is absorbed 
+by this term.</p>
+
+<p>In order to build reliable models we make the following assumptions on the error term:</p>
+
+<ul>
+  <li>
+    <p>The error <script type="math/tex">e</script> should be independent of <script type="math/tex">X</script>. For example,
+let our linear regression model represent the power consumption of an electronic device 
+as a function of the load, and let us assume the model is <script type="math/tex">P = P_0 + a L + e</script>
+(<script type="math/tex">P</script> and <script type="math/tex">L</script> representing the <script type="math/tex">Power</script> and <script type="math/tex">Load</script> random variables, respectively).
+The independence assumption dictates that the probabilistic nature of <script type="math/tex">e</script> should remain 
+unaffected whether the load is <em>10%, 95%</em>, or any other value.</p>
+  </li>
+  <li>
+    <p>The spread of e remains constant across all values of X. Going back to the previous example,
+e should not be more (or less) spread for the range of load values under study.</p>
+  </li>
+  <li>
+    <p>If statistical tests are required, we further need to assume that e has a normal
+distribution centered at 0. For further details on related matter check the <a href="https://statisticsbyjim.com/regression/ols-linear-regression-assumptions/">assumptions</a> 
+and <a href="https://towardsdatascience.com/how-do-you-check-the-quality-of-your-regression-model-in-python-fa61759ff685">best practices</a> 
+of linear regression.</p>
+  </li>
+</ul>
+
+<p>The coefficients in a linear regression model can be solved directly by
+<a href="https://en.wikipedia.org/wiki/Ordinary_least_squares"><em>matrix inversion</em></a> or more iteratively 
+by <a href="https://en.wikipedia.org/wiki/Gradient_descent"><em>gradient descent</em></a> or one of its variants.</p>
+
+<p>Here it is important to note that the ‘linear’ in linear regression does not necessarily 
+mean the relationship between X and Y is expressed as a straight line. For example,</p>
+
+<script type="math/tex; mode=display">Y = a_0 + a_1(X_1)^2 + a_2Log(X_2)</script>
+
+<p>is also considered a linear model as long as the expression remains linear in the 
+coefficients.</p>
+
+<p>Clearly, there is a plethora of models to choose from. 
+we, therefore, need to have metrics that quantify how well a model performs in capturing 
+the relationship between X &amp; Y to be able to select the best model. Two of such metrics are:</p>
+
+<ul>
+  <li>
+    <p><strong>R<sup>2</sup></strong>: Also refered to as the <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a>
+indicates how much of the variability of Y is explained by X (the independent variable). R<sup>2</sup> of 
+1 tells us X perfectly (100%) explains the variability in Y, i.e., there is no uncertainty left in Y once 
+the values of X are known. By contrast, R<sup>2</sup> of 0 suggests X does not explain any of 
+the variability in Y at all. Other values between 0 and 1 lie on the spectrum accordingly.</p>
+  </li>
+  <li>
+    <p><strong>Predicted <em>R<sup>2</sup></em> and Adjusted <em>R<sup>2</sup></em></strong>: One weakness of <em>R<sup>2</sup></em> is that it is susiptible to 
+overfitting. Predicted <em>R<sup>2</sup></em> and Adjusted <em>R<sup>2</sup></em> are aimed at mitigating this issue. Read
+<a href="https://statisticsbyjim.com/regression/interpret-adjusted-r-squared-predicted-r-squared-regression/">this</a>
+post for more detail.</p>
+  </li>
+  <li>
+    <p><strong>RMSE</strong>: The <em>Root Mean Squared Error</em> is  the expected magnitude of prediction error. 
+RMSE = 0 represents a perfect model, and model performance decreases as RMSE increases. 
+RMSE can also be nicely decomposed into <a href="https://www.youtube.com/watch?v=zrEyxfl2-a8">bias and variance</a> terms of the model.</p>
+  </li>
+</ul>
+
+<p>We will also apply <em>confidence</em> and <em>prediction</em> intervals. <a href="https://www.youtube.com/watch?v=gNIpR8bdgUo">This</a> video
+elegantly shows what their difference is and how to calculate them.</p>
+
+<h3 id="3-the-data">3. The data</h3>
+
+<p>The data, as already mentioned in the introduction, is scrapped from car listing websites.
+The scrapped data is parsed and cleaned and the resulting data is stored in a csv file, which
+has the following format:</p>
+
+<table style="width:75%">
+<tr>
+    <th>Year</th>
+    <td>Year of release, e.g. 2010, 2019</td>
+</tr>
+<tr>
+    <th>Make</th>
+    <td>Manufacturer of the car: Honda, Toyota, Nissan, Ford, Hyundai, Chevrolet and Volkswagen</td>
+</tr>
+<tr>
+    <th>Model</th>
+    <td>Accord, Camry, Altima, Fusion, Sonata, Malibu or Passat</td>
+</tr>
+<tr>
+    <th>Model detail</th>
+    <td>Trim level, e.g. for Honda LX, Sport, EX, EX-L and Touring</td>
+</tr>
+<tr>
+    <th>Price</th>
+    <td>Listing price of the car</td>
+</tr>
+<tr>
+    <th>Mileage</th>
+    <td>Mileage (in miles) posted by dealer</td>
+</tr>
+<tr>
+    <th>Website</th>
+    <td>A two letter abbreviation to identify the source website</td>
+</tr>
+</table>
+
+<p>The following table provides valuable summary statistics of the quantitative columns</p>
+
+<center><img src="/assets/img/cars-summary-stat.png" align="middle" style="width: 300px; height: 400px" /></center>
+
+<p>The CSV file contains listing details of 11,018 cars. However, dealers may list the same 
+car more than once to improve its chance of being discovered among other cars. Duplicate entries 
+may lead to inaccurate analysis and prediction. We, therefore, need to remove duplicates and run
+the summary statistics again. Doing so reveals that about half of the listings are duplicate entries
+as shown below.</p>
+
+<center><img src="/assets/img/cars-summary-stat-nodup.png" align="middle" style="width: 300px; height: 400px" /></center>
+
+<p>Now we know that there are 6396 unique cars. Going one level deeper, we can see the number of cars, 
+the average price, average mileage and average release year per manufacturer (model) below</p>
+
+<center><img src="/assets/img/per-manufac-stat.png" align="middle" style="width: 400px; height: 500px" /></center>
+
+<p>Out of the 6396 unique cars listed, 1540 are Nissan Altima, 1317 are Toyota Camry, 1058 are Honda Accord
+and so on.</p>
+
+<h3 id="4-analysis">4. Analysis</h3>
+
+<p>Here, the goal is to build a multi-linear regression model that predicts (summarizes) the 
+<em>Listing Price</em> of a used mid-size sedan car based on its <em>Mileage</em>, <em>Release (Model) Year</em>, and <em>Trim level</em>.
+We’ll build separate regression models for each of the cars listed above, excluding VW Passat 
+and Chevrolet Malibu.</p>
+
+<p>Before jumping into building the regression models, let us examine how <em>Price</em> tends to change 
+with respect to <em>Mileage</em> and <em>Year</em> by taking the Honda Accord data set as an example. The following plots reveal 
+the strong negative relationship between mileage and price and the strong positive relationship between release year and price.</p>
+
+<center><img src="/assets/img/honda-trend-curves.png" align="middle" style="width: 800px; height: 500px" /></center>
+
+<p>The correlation matrix shown below quantifies this relationship. It also shows the strong negative relationship 
+between Mileage and Year. Intuitively, it is highly unlikely for a 2019 model to rack up 100,000 miles
+as it is equally unlikely for a 2008 model to have a mileage of 10,000 miles.</p>
+
+<center><img src="/assets/img/honda-corr.png" align="middle" style="width: 300px; height: 250px" /></center>
+
+<p>For more on this and other analysis related to regression model building see <a href="https://nbviewer.jupyter.org/github/mEyob/linear-regression-car-price/blob/master/analysis.ipynb">this</a> python notebook.</p>
+
+<h4 id="41-regression-models">4.1 Regression models</h4>
+<p>After considering a number of features and feature transforms the following regression function that better expresses the relationship between the independent variables (<em>Mileage</em>, <em>Year</em>, <em>Trim level</em>)and dependent variable (<em>Listing Price</em>)is  chosen:</p>
+
+<p><script type="math/tex">P_i(M_i, Y_i, T_i) = a_0 + a_1 log2(M_i) + a_2 (2019 - Y_i) + \sum_{j=2}^{n} a_{j+1} 1_{\{T_j=T_i\}}</script>,</p>
+
+<p>where <script type="math/tex">P_i,M_i, Y_i, \text{ and }T_i</script> are the <em>Price, Mileage, Year,</em> and <em>Trim</em> of car <script type="math/tex">i</script>, respectively.
+<script type="math/tex">a_0, a_1, a_2</script> are the intercept, coefficient w.r.t <em>Mileage</em>, and coefficient w.r.t. <em>Year</em>.
+Since trim level is a categorical variable, we need to <a href="https://en.wikiversity.org/wiki/Dummy_variable_(statistics)">dummy-encode</a> it before it can be used in a regression model. Assuming there are <script type="math/tex">n</script> trim levels of a car model <script type="math/tex">n-1</script> dummy variables are 
+created using the summation of the indicators in the last term of the above equation. 
+This results in one dummy variable for each trim level except the base trim-level. Coefficeint <script type="math/tex">a_{j+1}</script>,
+therefore, represents the price difference between the base trim level and the <script type="math/tex">j^{th}</script> trim level.</p>
+
+<p>Note that <em>Mileage</em> and <em>Year</em> are transformed using functions <script type="math/tex">f(M)=log2(M)</script> and <script type="math/tex">g(Y) = 2019 - Y</script>.
+The log transformation of Mileage not only yields better model performance it can also be motivated by the 
+fact that the sharpest decline in Price happens during the first few (thousand) miles. Once a car makes it
+into tens of thousands of miles, the rate at which the Price decreases should slow down. Logarithmic 
+functions are one of several functions that could capture this nonlinear relationship between <em>Mileage</em> and <em>Price</em>.
+Since base 2 logarithm is used, $a_1$ represents the <em>depreciation with respect to mileage</em> every time mileage doubles.</p>
+
+<p>When it comes to the <em>Year</em>, what affects the <em>Price</em> of a car is how old the model is relative to 
+the newest model, which is why the transformation <script type="math/tex">g(Y) = 2019 - Y</script> is used. For example, a <script type="math/tex">2016</script>
+Toyota Camry is <script type="math/tex">3</script> years old and should have a lower price than a <script type="math/tex">2017</script> (<script type="math/tex">2</script> years old) Toyota
+Camry if everything else is kept constant.</p>
+
+<p>Five elastic net regularised models are trained for Ford Fusion, Honda Accord, Hyundai Sonata, Nissan Altima,
+and Toyota Camry. The coefficients and performance metrics of the resulting models are shown below.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Car Model</th>
+      <th>Count<sup>*</sup></th>
+      <th>Coefficients(<script type="math/tex">a_1,a_2</script>)</th>
+      <th><script type="math/tex">R^2</script><sup>*</sup></th>
+      <th>RMSE($)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ford Fusion</td>
+      <td>743</td>
+      <td>(-1180, -920)</td>
+      <td>81.2%</td>
+      <td>1543</td>
+    </tr>
+    <tr>
+      <td>Honda Accord</td>
+      <td>1015</td>
+      <td>(-1350, -1050)</td>
+      <td>87.2%</td>
+      <td>1888</td>
+    </tr>
+    <tr>
+      <td>Hyundai Sonata</td>
+      <td>687</td>
+      <td>(-1200, -770)</td>
+      <td>80.3%</td>
+      <td>1302</td>
+    </tr>
+    <tr>
+      <td>Nissan Altima</td>
+      <td>1434</td>
+      <td>(-1250, -780)</td>
+      <td>70.9%</td>
+      <td>1217</td>
+    </tr>
+    <tr>
+      <td>Toyota Camry</td>
+      <td>1172</td>
+      <td>(-770, -1010)</td>
+      <td>77.2%</td>
+      <td>1510</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><script type="math/tex">R^2</script> score is calculated on a test set after outlier removal using <a href="https://en.wikipedia.org/wiki/Cook%27s_distance">Cook’s distance</a>.
+The number of cars used to train each model after outlier removal is presented in the ‘Count’ column.</li>
+</ul>
+
+<p>According to the regression models, Toyota Camry has the smallest (in magnitude) coefficient w.r.t
+<em>Mileage</em> at <script type="math/tex">a_1=-770</script>. Take, for example, the price of a given Toyota Camry is <script type="math/tex">\$20,000</script> at 500 miles. 
+The model predicts that the average price drop is $19,230$ at 1000 miles,  $18,460 at 2000 miles, so on.</p>
+
+<p>Note that coefficient <script type="math/tex">a_1</script> represents the <em>depreciation with respect to mileage</em>, which makes Toyota Camry 
+the best one among the five models considered for retaining much of its original value as mileage increases.
+By contrast, Nissan Altima and Hyundai Sonata exhibit the least <em>depreciation with respect to Year</em>, with every 
+passing year reducing the value of the car by about $800.</p>
+
+<p>The following plots show the fitted regression models for all car models along with the data used to fit 
+the regression models. In order to simplify the plots into 2D, cars (points in the scatter plot) are 
+assumed to rack up <a href="https://www.carinsurance.com/Articles/average-miles-driven-per-year-by-state.aspx">12000 miles per year</a>, allowing us to represent <em>Year</em> in terms of <em>Mileage</em> as <script type="math/tex">Year = Mileage // 12000</script>.</p>
+
+<center><img src="/assets/img/regfit-all.png" align="middle" style="width: 500px; height: 600px" /></center>
+
+<p>The bottom right plot shows all five regression curves in one plot. This plot, once more, gives the visual
+confirmation that Toyota Camry loses the least amount of value to depreciation.</p>
+
+<p>Without the 12000 miles/year assumption, the resulting plots are 3-dimensional. The next figure 
+shows such a plot for Honda Accord. It is easy to see that <em>Price</em> decreases linearly in the <em>Year</em>
+axis and logarithmically in the <em>Mileage</em> axis.</p>
+
+<center><img src="/assets/img/honda-3d.png" align="middle" style="width: 600px; height: 600px" /></center>
+
+<h4 id="42-prediction-and-comparison">4.2 Prediction and comparison</h4>
+
+<p>The regression models we built can be used to predict the value of a car as well as making inference.
+Typcial questions we are interested in prediction are “What is the average price 
+of used cars from model X, Year Y, trim T with mileage M?” or “What is the price range for a particular
+used car from model X, Year Y, trim T with mileage M?”. The former question is answered using the 
+the regression line and calculating a <em>confidence interval</em> around it, while the latter is addressed by 
+calculating a <em>prediction interval</em> along the regression line.</p>
+
+<p>For example, the predicted average price of the base trim-level (LE) 2016 Toyota Camry cars at 40000 miles is</p>
+
+<script type="math/tex; mode=display">P(40000, 2016, T_1) = 30392 -770 \log_{2}(40000) -1010 (2019 - 2016) + 0 = 15590</script>
+
+<p>with a narrow 95% confidence interval of <script type="math/tex">[15490, 15690]</script> while the 95% prediction interval is 
+<script type="math/tex">[11990, 19190]</script>. Roughly speaking, this means there is a 95% chance that a 2016 Toyota Camry LE car
+will have a listing price between <script type="math/tex">\$12,000</script> and <script type="math/tex">\$19,000</script> at <script type="math/tex">40000</script> miles.</p>
+
+<p>If we compare these numbers to a 2016 Hyundai Sonata car at 40000 miles, we get</p>
+
+<script type="math/tex; mode=display">P(40000, 2016, T_1) = 34093 -1200 \log_{2}(40000) -770 (2019 - 2016) + 0 = 13438</script>
+
+<p>with confidence and prediction intervals of <script type="math/tex">[13318, 13558]</script> and <script type="math/tex">[10038, 16838]</script>, respectively.</p>
+
+<p>In some cases, the prediction intervals can be too wide to be useful, specially compared 
+to the narrow confidence intervals for the average listing price. However, considering 
+the long list of factors that can affect the price of a car, this should not be surprising 
+since the regression model only uses mileage, year, and trim level to predict price. The 
+intervals could be narrowed down by obtaining more data and including additional features
+such as engine type, repair history and accident history.</p>
+
+<h3 id="5-conclusion">5. Conclusion</h3>
+
+<p>This post illustrated how a simple approach such as linear regression can be applied 
+to infere and predict the listing price of used mid-sized sedans. While regression can be 
+a valuable tool to predict a continuous valued dependent variable, it also sets some assumptions
+about the predicted and predicting variables that need to be checked before the resulting 
+regression model can be deemed acceptable.</p>
+
+<p>Once the assumptions are checked, regression models can easily be trained with a relatively
+small amount of data, and in addtion to it’s predictive power, the coefficients of the model also
+give some insight on the magnitude and direction of the relationship between the dependent and 
+independent variables.</p>
+
+
+  </article>
+
+  
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'meyob-github-io';
+      var disqus_identifier = '/blog/2019/linear-regression';
+      var disqus_title      = "Linear regression for assessing and predicting the market value of used cars";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  
+
+</div>
+
+      </div>
+    </div>
+
+    <footer>
+
+  <div class="wrapper">
+    &copy; Copyright 2020 Misikir Eyob.
+    Powered by <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> 
+
+    
+  </div>
+
+</footer>
+
+
+    <!-- Load jQuery -->
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<!-- Load Common JS -->
+<script src="/assets/js/common.js"></script>
+
+
+<!-- Load KaTeX -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+<script src="/assets/js/katex.js"></script>
+
+
+
+
+<!-- Include custom icon fonts -->
+<link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/assets/css/academicons.min.css">
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-XXXXXXXXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>

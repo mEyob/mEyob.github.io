@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Misikir Eyob | Sunway TaihuLight - China's newly crowned supercomputer</title>
+  <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+">
+
+  <link rel="shortcut icon" href="/assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="/blog/2016/top500/">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    
+    <span class="site-title">
+        
+        <strong>Misikir</strong> Eyob
+    </span>
+    
+
+    <nav class="site-nav">
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+      <div class="trigger">
+        <!-- About -->
+        <a class="page-link" href="/">about</a>
+
+        <!-- Blog -->
+        <a class="page-link" href="/blog/">blog</a>
+
+        <!-- Pages -->
+        
+          
+        
+          
+        
+          
+        
+          
+            <a class="page-link" href="/projects/">projects</a>
+          
+        
+          
+            <a class="page-link" href="/publications/">publications</a>
+          
+        
+          
+            <a class="page-link" href="/teaching/">teaching</a>
+          
+        
+          
+        
+          
+        
+
+        <!-- CV link -->
+        <!-- <a class="page-link" href="/assets/pdf/CV.pdf">vitae</a> -->
+
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Sunway TaihuLight - China's newly crowned supercomputer</h1>
+    <p class="post-meta">June 27, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <p>The latest <a href="http://www.top500.org/lists/2016/06/">Top500</a> list of the world’s fastest supercomputers
+was released on Monday 20th June 2016. The Top500 list was first introduced in June 1993, and it has been
+compiled twice a year ever since, pitting the world’s most powerful machines against each other.</p>
+
+<p>China maintained its top spot as the home of the fastest supercomputer in the planet, thanks to the 
+Sunway TaihuLight supercomputer, which scored a staggering 93 PETAFLOP/s on the <a href="https://en.wikipedia.org/wiki/LINPACK_benchmarks">LINPACK</a> benchmark. This is roughly three times faster than the
+Tianhe-2 supercomputer, which has been the pacesetter for the past three years.</p>
+
+<p>So let us dip into the data, which you can download from <a href="https://www.top500.org/lists/2016/11/">here</a>.</p>
+
+<p><img src="/assets/img/rank.png" alt="perf" style="width: 600px;" /></p>
+
+<p>The above table shows the five fastest supercomputers. The ‘Rpeak’ and ‘Rmax’ columns represent the advertized peak
+performance and the maximum performance achieved in <a href="https://en.wikipedia.org/wiki/FLOPS">TeraFLOPS</a>.</p>
+
+<p>So, the world’s fastest computer can perform at about 93 PetaFLOPS! For some reason, clock cycle per second (=Hz)
+is favored when it comes to measuring performance of computers. So let’s make a (highly approximative) conversion between FLOPS and Hz. Assume that the 
+Sunway TaihuLight processes one operation per clock cycle, this would correspond to 93PHz. To put it into perspective, let’s see what it means in comparison to an off-the-shelf consumer laptop computer having a 2.4GHz double core processor. Furthermore, let’s generously assume that the laptop completes one operation per cycle, and that it can perfectly parallelize (so that its maximum total speed would be 4.8GHz :)). Even with such relaxed assumptions, the Sunway TaihuLight would be <em>93015000/4.8 ≈ 20 ×</em> <script type="math/tex">10^6</script> times faster. In other words, a complex operation that takes 10 minutes 
+on the poor laptop would be completed within 30 microseconds by the Sunway TaihuLight.</p>
+
+<p>Enough with the performance. Let’s look at the “Power” and “Mflops/Watt” columns of the above dataframe a bit more closely. The former gives the power consumption values in kWatts, while the latter highlights energy efficiency of
+the supercomputers. For example, the Sunway TaihuLight can perform about 6051 million floating point operations per second for each Watt of power it consumes.</p>
+
+<p>It goes without saying that such supercomputers are expensive to build, which justifies the hefty price for getting one. But the purchase price of supercomputers is only one portion of the Total Cost of Ownership (TCO). Energy consumption is another factor to be considered. Again taking the world’s fastest supercomputer as an example, it consumes a whopping 15371 kWatt. This amounts to the electricity consumption of about 12,000 <a href="https://www.eia.gov/tools/faqs/faq.cfm?id=97&amp;t=3">American homes</a>. To get a rough
+estimate of the electricity bill, let’s assume a modest <em>0.05</em> cents/kWh and that the machine will be running at peak power
+for <em>10</em> hours/day. This will result in</p>
+
+<p><script type="math/tex">15371 kWatt \times 10 h/day \times 30 day/month \times \$0.05 /kWh \approx \$230000/month</script>!</p>
+
+<p>By now it should be obvious that one needs to keep a tab on the energy consumption of supercomputers for a complete comparison. In fact there are organizations solely focusing on energy efficiency, like <a href="www.green500.org">The Green500</a> and <a href="http://www.thegreengrid.org/">The Green Grid</a> So, now, let’s rank the supercomputers based on their energy efficiency, that is, sort them based on the “Mflops/Watt” column and introduce the “GreenRank” column.</p>
+
+<p><img src="/assets/img/greenRank.png" alt="perf" style="width: 600px;" /></p>
+
+<p>So, the Shoubu supercomputer from Japan wins the “Mflops/Watt” battle. But the Sunway TaihuLight is not far off, coming third next to the Satsuki. The next couple of plots show how the maximum performance achieved (Rmax) relates to the power consumption.</p>
+
+<p><img src="/assets/img/performance-power-corr.png" alt="perf" style="width: 600px;" /></p>
+
+<p>It comes as no surprise that there is a strong relationship between power consumption and performance.
+Thus, one needs to plan carefully in order to meet computation requirements while still having a reasonable
+power consumption. Pick a system way faster than your needs, and your energy consumption would shoot up unnecessarily.
+On the other hand, underprovisioning for the sake of energy savings may end up impairing the performance. Thus one needs to optimize between performance and energy.</p>
+
+<p>For this, lets consider a ranking scheme where the rank of a supercomputer would be the sum of its performance rank (the ‘Rank’ column) and its energy efficiency rank (the ‘GreenRank column’). Although this is an over symplified and synthetic ranking scheme, it would at least depict where a supercomputer lies in the spectrum when both performance and energy efficiency are given equal weight. The resulting rank is depicted in the following bar plot (Shorter bars correspond to better rank).</p>
+
+<p><img src="/assets/img/comboRank.png" alt="perf" style="width: 600px;" /></p>
+
+<p>Concluding the Performance-Energy thing, let’s look at the “Processor Generation” used in these supercomputers. As shown below the Intel Xeon E5 and E7 processors take the lion’s share, although the world’s fastest supercomputer
+runs on the ‘sunway’ processors.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Processor family</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Intel Xeon E5 (Broadwell)</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon E5 (Haswell)</td>
+      <td>221</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon E5 (IvyBridge)</td>
+      <td>118</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon E5 (SandyBridge)</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon E7 (Haswell-Ex)</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon E7 (IvyBridge)</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>Intel Xeon Phi</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Opteron 6100-series</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Opteron 6200 Series</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>Opteron 6300 Series</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>POWER7</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>Power BQC</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>SPARC64 IXfx</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>SPARC64 VIIIfx</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>SPARC64 XIfx</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>ShenWei</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Sunway</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Xeon 5500-series (Nehalem-EP</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Xeon 5500-series (Nehalem-EX)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Xeon 5600-series (Westmere-EP)</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>Xeon E7 (Westmere-EX)</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </article>
+
+  
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname  = 'meyob-github-io';
+      var disqus_identifier = '/blog/2016/top500';
+      var disqus_title      = "Sunway TaihuLight - China's newly crowned supercomputer";
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  
+
+</div>
+
+      </div>
+    </div>
+
+    <footer>
+
+  <div class="wrapper">
+    &copy; Copyright 2020 Misikir Eyob.
+    Powered by <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> 
+
+    
+  </div>
+
+</footer>
+
+
+    <!-- Load jQuery -->
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<!-- Load Common JS -->
+<script src="/assets/js/common.js"></script>
+
+
+<!-- Load KaTeX -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+<script src="/assets/js/katex.js"></script>
+
+
+
+
+<!-- Include custom icon fonts -->
+<link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/assets/css/academicons.min.css">
+
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-XXXXXXXXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>
